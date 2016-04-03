@@ -1,0 +1,6 @@
+permalink: /:year/:month/:title/
+url: http://DavidXiong.me
+pygments: true
+name: "DavidXiong"
+author: "DavidXiong"
+atom-baseurl: "http://smartandcoolbear.github.com"
