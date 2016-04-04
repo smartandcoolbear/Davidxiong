@@ -15,9 +15,10 @@ comments: yes
 - 电子邮件: [Davidxiong_work@163.com](mailto:Davidxiong_work@163.com)
 
 ## 技能
-- 熟悉Python,有使用机器学习相关库(numpy,scipy,sklearn等)经验,了解C,C++,熟悉深度学习框架Caffe
+- 熟悉运动控制，视觉，数据挖掘，机器学习等领域
+- 掌握java,C,C++,R,Python,php等语言
 - 熟悉常用数据结构,熟悉常用机器学习算法
-- 长期使用Linux/Unix操作系统,熟悉常用shell命令,熟悉docker容器技术
+- 英文口语流利，GRE：321，TOEFL：107，考取上海市中级口译证书
 
 
 ## 实习经历
@@ -36,9 +37,8 @@ comments: yes
 
 ## 论文发表
 
-- **Xuebo Liu**, Shuang Ye, Yonghao Luo, Yanghui Rao, [ZhihuRank: A Topic-Sensitive Expert Finding Algorithm in Community Question Answering Websites](http://lufo.me/docs/ICWL2015.pdf), [International Conference on Web-based Learning (ICWL) 2015](http://www.cityu.edu.hk/merc/icwl/icwl2015home.htm)
-- Xin Li, Yanghui Rao, Yanjia Chen, **Xuebo Liu**, Huan Huang, [Social Emotion Classification via Reader Perspective Weighted Model](http://lufo.me/docs/AAAI2016.pdf), [AAAI 16 Student Abstract](www.aaai.org/Conferences/AAAI/2016/aaai16studentcall.php)
-- Xin Li, Haoran Xie, Yanghui Rao, Yanjia Chen, **Xuebo Liu**, Huan Huang and Fu Lee Wang, [Weighted Multi-label Classification Model for Sentiment Analysis of Online News](http://lufo.me/docs/BigComp2016.pdf), [Big data and smart computing (BigComp) 2016](http://conf2016.bigcomputing.org/main/)
+- **Xiong, Chuantang**, and Xu Zhang. [An exclusive human-robot interaction method on the turtlebot platform](http://Davidxiong.com/docs/2013-Robio.pdf), [Robotics and Biomimetics (ROBIO), 2013 IEEE International Conference on. IEEE, 2013](http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6725829).
+- **Xiong, Chuantang**, et al. [Torque Envelope Control for Four-Wheel-Drive Electric Vehicles](http://Davidxiong.com/docs/2013-Robio.pdf), [2015 IFAC Workshop on Engine and Powertrain Control, Simulation and Modeling](https://e-cosm2015.osu.edu/)
 
 
 ## 项目经历
