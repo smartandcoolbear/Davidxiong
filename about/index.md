@@ -59,8 +59,7 @@ comments: yes
   - 仿真足球动作（如射门，带球，防守），编写代码
   - 获大学生足球组一等奖
 
-##
 -----
 
 如果这个博客对您有所帮助，您可以扫描下面的二维码请我喝杯咖啡（手机微信扫一扫下方的二维码可以直接付款）：
-<img src="/media/files/Payment.jpg" width="15%" height="15%">
+<img src="/media/files/Payment.jpg" width="20%" height="20%">
