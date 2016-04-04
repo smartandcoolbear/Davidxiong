@@ -22,7 +22,7 @@ comments: yes
 
 ## 实习经历
 
-- 2016.2-现在:于[SYSU-CMU Joint Institute of Engineering](http://jie.sysu.edu.cn/)实习,主要负责表情识别相关工作,工作内容包括:
+- 2015.07-2015.09:于[SYSU-CMU Joint Institute of Engineering](http://jie.sysu.edu.cn/)实习,主要负责表情识别相关工作,工作内容包括:
 	- 人脸检测:使用多个face detector(MoT,dpm)从图片中截取人脸,作为训练和测试数据
 	- Data augmentation:使用平移,旋转等方法增加数据
 	- 构建CNN:自己构造CNN进行训练
