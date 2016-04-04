@@ -7,7 +7,7 @@ comments: yes
 
 ## 基本信息
 
-- 姓名:刘学博
+- 姓名:熊川樘
 - 教育经历: 2012级中山大学数据科学与计算机学院软件工程专业
 - 个人博客: [lufo.me](http://lufo.me/)
 - Github: [github.com/lufo816](https://github.com/lufo816)
