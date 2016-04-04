@@ -8,11 +8,11 @@ comments: yes
 ## 基本信息
 
 - 姓名:熊川樘
-- 教育经历: 2012级中山大学数据科学与计算机学院软件工程专业
-- 个人博客: [lufo.me](http://lufo.me/)
-- Github: [github.com/lufo816](https://github.com/lufo816)
-- 手机: 13631254240
-- 电子邮件: [lufo816@gmail.com](mailto:lufo816@gmail.com)
+- 教育经历: 2013级上海交通大学密西根学院电子科学与技术专业
+- 个人博客: [Davidxiong.com](http://Davidxiong.com/)
+- Github: [github.com/smartandcoolbear](https://github.com/smartandcoolbear)
+- 手机: 15201931536
+- 电子邮件: [Davidxiong_work@163.com](mailto:Davidxiong_work@163.com)
 
 ## 技能
 - 熟悉Python,有使用机器学习相关库(numpy,scipy,sklearn等)经验,了解C,C++,熟悉深度学习框架Caffe
