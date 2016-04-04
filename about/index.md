@@ -61,6 +61,5 @@ comments: yes
 -----
 
 如果这个博客对您有所帮助，您可以扫描下面的二维码请我喝杯咖啡:
-
 手机微信扫一扫下方的二维码可以直接付款
-![]<img src="/media/files/Payment.jpg" width="50%" height="50%">
+<img src="/media/files/Payment.jpg" width="15%" height="15%">
