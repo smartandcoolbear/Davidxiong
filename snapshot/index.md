@@ -216,7 +216,7 @@ dji-user/qYLcNeZdc3v4Q
 
 
 整套软件的设计架构如下（由于PDF转PNG出现了一些问题，图片中着色不太对）：
-![image](https://github.com/smartandcoolbear/Davidxiong/blob/gh-pages/art/DJI-Monitor%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84.png)
+![image](https://raw.githubusercontent.com/smartandcoolbear/Davidxiong/gh-pages/art/DJI-Monitor%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84.png)
 
 
 这套软件架构能够支持本地控制和远程控制两种方案。对于本地控制，用户不需要与基站连接公网通信，而是采用配置静态IP，在局域网内互联的方式。对于远程控制，用户与基站通过公网相连，由于用户端都是websocket_client，因此对用户端的网络不需做任何限制，用户可以在自己的局域网内，也可以切换2G/3G/4G/WIFI网络。整套架构包含视频与控制两套独立链路，用户通过前端（可以以网页的形式，也可以以APP或者EXE的形式）来实时控制飞机，也可以观看到飞机传输回来的实时图传（不限制图传数目，延时测试在1s以内）。
