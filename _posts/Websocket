@@ -1,0 +1,24 @@
+---
+title: Websocket简析
+layout: post
+tags:
+  - websocket
+---
+
+
+
+这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。
+所以这里将websocket相应的信息整理一下。
+
+
+
+相关链接：
+
+
+
+1.[Websocket协议](http://blog.csdn.net/mary736265635/article/details/47757237)
+
+
+2.[Websocket协议解析](http://www.king-liu.net/?p=772)
+
+#何谓Websocket？
