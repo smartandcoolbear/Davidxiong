@@ -1,0 +1,45 @@
+---
+title: C++11一些新特性汇总
+layout: post
+tags:
+  - C++11
+---
+
+
+
+项目中用到了一些C++11的特性，主要包括：1.Lamda表达式与std::bind, std::function 2.auto自动类型推导 3.nullptr空指针 4.智能指针。此外，还有一些对于template的使用，动态DLL的调用，
+以及程序架构的分析，由于不属于C++11这块的东西，因此都放在下次再做介绍。
+
+
+相关链接：
+
+
+
+1.[C++ 中的 Lambda 表达式](https://msdn.microsoft.com/zh-cn/library/dd293608.aspx)
+
+
+2.[Websocket协议解析](http://www.king-liu.net/?p=772)
+
+#Lamda的表达式理解与使用
+
+
+Lamda表达式的描述是这样：In C++11, a lambda expression—often called a lambda—is a convenient way of defining an anonymous function object right at the location where it is invoked or passed as an argument to a function
+(在 C++ 11 中，lambda 表达式（通常称为 "lambda"）是一种在被调用的位置或作为参数传递给函数的位置定义匿名函数对象的简便方法)。我的理解是，简单来讲，就是将一个匿名函数作为参数传递给另一个函数，并在另一个函数中进行调用。
+
+1. Lamda的表达式各部分
+
+
+ISO C++ 标准展示了作为第三个参数传递给 std::sort() 函数的简单 lambda：
+
+
+#include <algorithm>
+#include <cmath>
+
+void abssort(float* x, unsigned n) {
+    std::sort(x, x + n,
+        // Lambda expression begins
+        [](float a, float b) {
+            return (std::abs(a) < std::abs(b));
+        } // end of lambda expression
+    );
+}
