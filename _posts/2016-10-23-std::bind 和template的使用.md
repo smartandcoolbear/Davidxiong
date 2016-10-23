@@ -151,13 +151,13 @@ bind是这样一种机制，它可以预先把指定可调用实体的某些参�
     
 对于这个不行的应该怎么办呢？我们可以这样：
 
-    std::function<void(Foo*)> ff = std::bind(&Foo::f1);  //接收一个对象
-    ff(&foo);  //传入一个实例的引用
+    std::function<void(Foo*)> ff = std::bind(&Foo::f1);  //接收一个对象
+    ff(&foo);  //传入一个实例的引用
 
     
 也可以这样：
 
-    std::function<void(void)> ff = std::bind(&Foo::f1,&foo);  //直接绑定一个实例对象的引用
+    std::function<void(void)> ff = std::bind(&Foo::f1,&foo);  //直接绑定一个实例对象的引用
     ff();
     
 还可以这样：
