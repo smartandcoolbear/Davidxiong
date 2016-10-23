@@ -1,8 +1,8 @@
 ---
-title: C++11一些新特性汇总
+title: std::bind 和template的使用
 layout: post
 tags:
-  - C++11
+  - C++
 ---
 
 
