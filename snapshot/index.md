@@ -2,8 +2,6 @@
 title: Snapshot
 layout: page
 ---
-114.55.114.86
-dji-user/qYLcNeZdc3v4Q
 
 
 2016/4/7
