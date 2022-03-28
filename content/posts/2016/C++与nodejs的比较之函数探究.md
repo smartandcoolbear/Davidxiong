@@ -1,0 +1,177 @@
+---
+title: C++与nodejs的比较之函数探究
+layout: post
+tags:
+  - C++, node.js, 函数
+---
+
+
+现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章，
+我就以“函数”为切入点，说明一下两个语言有趣的地方。
+
+
+相关链接：
+
+1.[C/C++函数指针的用法](http://www.cnblogs.com/TenosDoIt/p/3164081.html)
+
+
+2.[C++11中的std::function](http://www.jellythink.com/archives/771)
+
+# C++对于函数的理解和发展
+
+在C++的发展历程中，“函数”其实一直以来都不是一等公民，即使随着C++不断的完善改进，函数越来越像一个普通变量，但由于历史原因，人们在C++中还是无法很顺畅的像使用一个普通对象一样使用函数。
+
+举例来说，一开始C++中对对象的认识是变量、参量、指针等，因此我们最为常见的函数传参是这样：
+
+    void function(float* x, unsigned n) {
+    },
+    
+其传入的参数基本都是各种变量类型。
+
+然而，随着技术的不断发展，将函数作为参数传入的需求越来越多。因此C++中慢慢延伸出这样的用法：
+
+    int fun1(int i){ 
+        return   i; 
+    } 
+    void fun2(int j, int (*p)(int)){ 
+        cout << p(j); 
+    } 
+    void main() { 
+        int   i=1; 
+        fun2(i,fun1); 
+    } 
+    
+在这种用法中，由于无法直接将函数作为参数传入另一个函数中，因此人们不得已而为之的选择了利用指针，创造出函数指针这么一个东西。这个东西虽然能够在一定程度上实现传入函数的效果，然而依然有其局限性。
+譬如：当需要传入的函数是某个类的成员函数时，事情就变得复杂了。因为指针一定是需要指向一个可靠的地址的，然而当这个类还没有实例化的情况下，其成员函数没有具体的地址，因此指针无法指向该成员函数。
+举例来说：
+
+     class A { 
+          public: 
+            int fun1(int i){return i;}; 
+        }; 
+
+        void fun2(int j, int (A::*p)(int)){ 
+            cout << p(j); 
+        } 
+
+        void main(){ 
+            A oba; 
+            int i = 1; 
+            fun2(i, oba.fun1);     //this   is   an   error 
+        }
+        
+这个函数指针的传递形式就是错误的，因为跟普通函数或者类中的static函数不一样，这里的类成员函数没有被真正的实例化，因此函数指针也指不到其对应的地址。正确的写法应该是：
+
+
+    class A{ 
+    public: 
+      int i1; 
+      int fun1(int i){ 
+        return   i; 
+        }; 
+    }; 
+
+    void main(){ 
+    int (A::*fp1)(int);         //声明fp1为class   A中的成员函数指针 
+    int A::*ip1;                       //声明ip1为class   A中的成员变量指针 
+    fp1=&A::fun1;                     //初始化fp1 
+    ip1=&A::i1;                         //初始化ip1   
+    A   oba; 
+    oba.*ip1=2; 
+    (oba.*fp1)(oba.*ip1); 
+    }
+    
+接下来就可以构造含有成员函数指针参数的函数了： 
+    
+    void fun2(int j, A ob, int (A::*p)(int)){ 
+         cout << (ob.*p)(j); 
+     }
+     
+ 注意声明时必须加上一个对象参数A   ob，因为只有把这个偏移和具体对象的开始地址结合，才能得到实际地址。
+ 
+ 在C++不断的修改完善中，直至C++11提出了std::function这一用法。到了这一步，std::function基本可以实现将函数当做普通变量使用了。举例如下：
+
+        void GetParameters(std::function<void(const QJsonObject&)>) override;
+        
+        void DJIP3Agent::GetParameters(std::function<void(const QJsonObject&)> cb)
+        {
+            QJsonObject obj, value;
+            obj["CMD"] = "GetParameters";
+            sendJson(obj, cb);
+        }
+  
+这是项目中的一段代码，在这段代码中，cb这个回调函数已经很可以很方便的作为参数传入传出，进行调用了。
+
+同样，我们再以普通函数，类成员函数，类静态函数，以及lambda表达式举例，以说明std::function这种把函数直接当成对象的处理形式，是多么的优雅。
+
+      #include <functional>
+      #include <iostream>
+      using namespace std;
+
+      std::function< int(int)> Functional;
+
+      // 普通函数
+      int TestFunc(int a)
+      {
+          return a;
+      }
+
+      // Lambda表达式
+      auto lambda = [](int a)->int{ return a; };
+
+
+      // 1.类成员函数
+      // 2.类静态函数
+      class TestClass
+      {
+      public:
+          int ClassMember(int a) { return a; }
+          static int StaticMember(int a) { return a; }
+      };
+      
+在以上的四种函数里，用std::function都可以很方便的指代。具体如下：
+      
+      int main(){
+          // 普通函数
+          Functional = TestFunc;
+          int result = Functional(10);
+          cout << "普通函数："<< result << endl;
+
+          // Lambda表达式
+          Functional = lambda;
+          result = Functional(20);
+          cout << "Lambda表达式："<< result << endl;
+
+          // 类成员函数
+          TestClass testObj;
+          Functional = std::bind(&TestClass::ClassMember, testObj, std::placeholders::_1);
+          result = Functional(40);
+          cout << "类成员函数："<< result << endl;
+
+          // 类静态函数
+          Functional = TestClass::StaticMember;
+          result = Functional(50);
+          cout << "类静态函数："<< result << endl;
+
+          return 0;
+      }
+
+特别是对照利用std::function获取类成员函数和利用函数指针获取成员函数，发现代码简直不是好看了一点点。因此，直至C+11，才能说C++里将函数真正的当成了一个对象进行处理。
+
+
+# node.js对于函数的理解和发展
+
+然而，对于node.js而言，一开始就直接把函数定义成了一等公民,不仅如此，根本没有什么boolean, int, float之类的数据类型，通通var或者let。任何一个node.js的程序员都可以很流畅的写出：
+
+
+         var add_one = function(var a){
+            return a+1;
+          }
+          var add_two = function(var add_one, var a){
+            var temp = add_one(a);
+            return add_one(temp)；
+          }
+
+这样的函数。这明显看起来比C++中std::function还要简洁美观。同时，由于node.js中对于函数的传出传入很自然，因此特别适合做一些带回调函数的工作。那这也意味着，非常适合用来处理异步操作。这也就引入了C++与node.js最大的区别了：一个适合做同步操作，是编译型语言；一个适合做异步操作，是解释行语言。
+
+下一章中，我们还会探讨c++与node.js由于底层设计的不同，导致两者对于很多设计模式的区别。例如C++中的工厂模式，Java中加入反射的动态工厂模式等。这些设计模式其实说实在话，都是在补C++原有设计不足的坑。如果C++设计的精巧一些，根本不会有这些设计模式的出现，而都是很自然的利用函数生成函数，或者是利用类生成类。这个我们就留到下章再讲。

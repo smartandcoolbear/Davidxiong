@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>熊川樘的技术博客</title>
-    <link>https://example.com/</link>
+    <link>https://smartandcoolbear.github.io/</link>
     <description>Recent content on 熊川樘的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 10 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://smartandcoolbear.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Websocket简析</title>
-      <link>https://example.com/posts/2016/websocket/</link>
+      <link>https://smartandcoolbear.github.io/posts/2016/websocket/</link>
       <pubDate>Sat, 10 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2016/websocket/</guid>
+      <guid>https://smartandcoolbear.github.io/posts/2016/websocket/</guid>
       <description>这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。 所以这里将websocket相应的信息整理一下。
 相关链接：
 1.Websocket协议
@@ -49,19 +49,19 @@ Upgrade: websocket</description>
     
     <item>
       <title>About</title>
-      <link>https://example.com/about/</link>
+      <link>https://smartandcoolbear.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/about/</guid>
+      <guid>https://smartandcoolbear.github.io/about/</guid>
       <description>基本信息  姓名:熊川樘 教育经历: 2013级上海交通大学密西根学院电子科学与技术专业 个人博客: Davidxiong.cn Github: github.com/smartandcoolbear 手机: 17620490618 电子邮件: 334386876@qq.com  技能  熟悉运动控制，视觉，数据挖掘，机器学习等领域 掌握java,C,C++,R,Python,php等语言 熟悉常用数据结构,熟悉常用机器学习算法 英文口语流利，GRE：321，TOEFL：107，考取上海市中级口译证书  实习经历  2015.07-2015.09:阿里巴巴网络技术有限公司（数据挖掘，机器学习），任算法工程师，工作内容包括：  针对阿里云产品，在ODPS平台上，通过SQL拉取并清洗数据 基于用户特征和时间序列，利用arima、SVM、GBDT等模型，预测云产品订单的每月新增量及释放量（预测18周） 算法精度达85%以上   2015.04-2015.07:大疆创新科技有限公司（Onboard SDK开发），任软件工程师，工作内容包括:  协助开发Onboard SDK, 编写“经纬100”型号无人机windows系统下通信协议 编写Onboard SDK在Windows系统下的应用程序，用以调试Onboard SDK 利用“经纬100”相应视觉配件“Guidance”,通过双目定位，编写程序控制无人机自动精确降落   2014.11-2014.12:密西根中国中心（组织及随行翻译），任项目助理及随行翻译，工作内容包括：  接洽由密西根州州长所率领的商务代表团 作为Corrigan货运公司随行翻译参与同上汽进出口公司、延锋汽车内饰有限公司、采埃孚集团的商务会谈    论文发表  Xiong, Chuantang, and Xu Zhang. An exclusive human-robot interaction method on the turtlebot platform, Robotics and Biomimetics (ROBIO), 2013 IEEE International Conference on.</description>
     </item>
     
     <item>
       <title>C&#43;&#43;11一些新特性汇总</title>
-      <link>https://example.com/posts/2016/c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</link>
+      <link>https://smartandcoolbear.github.io/posts/2016/c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2016/c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</guid>
+      <guid>https://smartandcoolbear.github.io/posts/2016/c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</guid>
       <description>项目中用到了一些C++11的特性，主要包括：1.Lambda表达式与std::bind, std::function 2.auto自动类型推导 3.nullptr空指针 4.智能指针。此外，还有一些对于template的使用，动态DLL的调用， 以及程序架构的分析，由于不属于C++11这块的东西，因此都放在下次再做介绍。
 相关链接：
 1.C++ 中的 Lambda 表达式
@@ -75,10 +75,10 @@ Lamda的表达式理解与使用 Lamda表达式的描述是这样：In C++11, a 
     
     <item>
       <title>C&#43;&#43;与nodejs的比较之函数探究</title>
-      <link>https://example.com/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
+      <link>https://smartandcoolbear.github.io/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
+      <guid>https://smartandcoolbear.github.io/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
       <description>现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章， 我就以“函数”为切入点，说明一下两个语言有趣的地方。
 相关链接：
 1.C/C++函数指针的用法
@@ -93,10 +93,10 @@ int fun1(int i){ return i; } void fun2(int j, int (*p)(int)){ cout &amp;lt;&amp;
     
     <item>
       <title>std::bind 和template的使用</title>
-      <link>https://example.com/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <link>https://smartandcoolbear.github.io/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://smartandcoolbear.github.io/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
       <description>接上次的笔记，继续整理std::bind,std::function等函数，以及template的一些使用说明。
 相关链接：
 1.模板(Templates)
@@ -114,10 +114,10 @@ template 是声明类模板的关键字，表示声明一个模板，模板参�
     
     <item>
       <title>一套远程项目的技术点总结</title>
-      <link>https://example.com/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</link>
+      <link>https://smartandcoolbear.github.io/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</guid>
+      <guid>https://smartandcoolbear.github.io/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</guid>
       <description>要完成一个远程监控的项目，大体需要包含以下几个方面的工作：1.前端 2. 服务器端（后台） 3. 对于很多物联网的硬件来说，还有从相应硬件连接到服务器的一部分， 我将其称之为后端。对于每个部分，我希望自己都能掌握至少一种语言，一种框架，能够对整套流程的开发做到完全可知可控。现阶段，前端我希望能掌握 html+css+js的 三件套语言，以及vue.js的开发框架。服务器端掌握node.js的开发语言，以及think.js的开发框架。对于后台，掌握c++的开发，以及相应c+11的特性。至于嵌入式，那 暂时不是我的兴趣，我就不去太多关注了。
 对于一个PC端桌面应用而言，“QT-C++-Electron-前端”这套方案，我觉得是非常好的解决方案。这样最大的几个好处是：1.前后端分离，靠websocet通信，架构清晰。 2.前端页面漂亮，交互自然。 3.移植到网页版简单方便。 总的来说，相应的桌面程序可以又快又漂亮！
 对于服务器端，简单的几个必要工作就是：1.购买服务器，购买域名，配置nginx,配置或者购买数据库。2.搭建合适的开发框架，开搞~由于我现在做的项目还比较小， 暂时还没有涉及到分布式数据库的工作，所以对于分布式这块还不太了解。
@@ -126,10 +126,10 @@ template 是声明类模板的关键字，表示声明一个模板，模板参�
     
     <item>
       <title>他山之石，可以攻玉 (B站代码学习系列一)</title>
-      <link>https://example.com/posts/2019/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</link>
+      <link>https://smartandcoolbear.github.io/posts/2019/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2019/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</guid>
+      <guid>https://smartandcoolbear.github.io/posts/2019/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</guid>
       <description>由于众所周知的一些原因，B站代码迫不得已&amp;quot;被开源&amp;quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。 由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：
  B站代码结构学习(主要学习/app目录) B站典型的中间件/框架学习（主要学习/library目录） B站整体的技术栈分析（与业界的比较）。  今天先讲第一部分：B站代码结构学习。
 相关链接：
