@@ -32,7 +32,7 @@ void function(float* x, unsigned n) { },  其传入的参数基本都是各种�
 int fun1(int i){ return i; } void fun2(int j, int (*p)(int)){ cout &lt;&lt; p(j); } void main() { int i=1; fun2(i,fun1); }  在这种用法中，由于无法直接将函数作为参数传入另一个函数中，因此人们不得已而为之的选择了利用指针，创造出函数指针这么一个东西。这个东西虽然能够在一定程度上实现传入函数的效果，然而依然有其局限性。 譬如：当需要传入的函数是某个类的成员函数时，事情就变得复杂了。因为指针一定是需要指向一个可靠的地址的，然而当这个类还没有实例化的情况下，其成员函数没有具体的地址，因此指针无法指向该成员函数。 举例来说：
  class A { public: int fun1(int i){return i;}; }; void fun2(int j, int (A::*p)(int)){ cout &lt;&lt; p(j); } void main(){ A oba; int i = 1; fun2(i, oba." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://example.com/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/" /><meta property="article:section" content="posts" />
 
 
 
@@ -251,10 +251,10 @@ oba.*ip1=2;
 			</footer>
 		</article>
 		<div class="post-nav thin">
-			<a class="next-post" href="https://example.com/posts/2016/2016-10-16-c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/">
+			<a class="next-post" href="https://example.com/posts/2016/c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>C&#43;&#43;11一些新特性汇总</span>
 			</a>
-			<a class="prev-post" href="https://example.com/posts/2016/2016-10-23-stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/">
+			<a class="prev-post" href="https://example.com/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>std::bind 和template的使用</span>
 			</a>
 		</div>
