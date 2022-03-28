@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="他山之石，可以攻玉 (B站代码学习系列一)">
+<meta itemprop="description" content="由于众所周知的一些原因，B站代码迫不得已&quot;被开源&quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。 由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：
+ B站代码结构学习(主要学习/app目录) B站典型的中间件/框架学习（主要学习/library目录） B站整体的技术栈分析（与业界的比较）。  今天先讲第一部分：B站代码结构学习。
+相关链接：
+1.一探B站后台架构
+B站代码结构学习 先贴一张B站的整体代码结构出来： 在这张结构图中，可以看到几个点：
+ 整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。 有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。 在.gitlab中，有比较规范的提交规范和MR规范。 代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel&#43;jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。 包管理方案使用的是vendor。  接下来我们再看下/app 目录下的具体结构： 解释说明如下：
+ admin: 后台管理模块 common:公共模块，实际上没咋用到 infra:各种消息相关的基础服务（canal/config/databus/discovery/notification） interface: 提供对外网关的服务 service: 提供RPC的内部服务 job:提供异步服务，主要用于处理消息队列 tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。  由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。
+接下来我们再看看具体某个业务的代码结构： 解释说明如下：
+ cmd:存放main.go和配置文件(使用toml格式)，作为启动入口 conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。 dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。 model:数据库相关结构体 server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。 service:提供服务实现，完成具体逻辑。 rpc（如有）：提供RPC调用方法。 版本三剑客。  由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。
+需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。">
+
+<meta itemprop="wordCount" content="43">
+<meta itemprop="keywords" content="Golang, bilibili," /><meta property="og:title" content="他山之石，可以攻玉 (B站代码学习系列一)" />
+<meta property="og:description" content="由于众所周知的一些原因，B站代码迫不得已&quot;被开源&quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。 由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：
+ B站代码结构学习(主要学习/app目录) B站典型的中间件/框架学习（主要学习/library目录） B站整体的技术栈分析（与业界的比较）。  今天先讲第一部分：B站代码结构学习。
+相关链接：
+1.一探B站后台架构
+B站代码结构学习 先贴一张B站的整体代码结构出来： 在这张结构图中，可以看到几个点：
+ 整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。 有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。 在.gitlab中，有比较规范的提交规范和MR规范。 代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel&#43;jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。 包管理方案使用的是vendor。  接下来我们再看下/app 目录下的具体结构： 解释说明如下：
+ admin: 后台管理模块 common:公共模块，实际上没咋用到 infra:各种消息相关的基础服务（canal/config/databus/discovery/notification） interface: 提供对外网关的服务 service: 提供RPC的内部服务 job:提供异步服务，主要用于处理消息队列 tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。  由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。
+接下来我们再看看具体某个业务的代码结构： 解释说明如下：
+ cmd:存放main.go和配置文件(使用toml格式)，作为启动入口 conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。 dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。 model:数据库相关结构体 server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。 service:提供服务实现，完成具体逻辑。 rpc（如有）：提供RPC调用方法。 版本三剑客。  由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。
+需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/2019/%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/" /><meta property="article:section" content="posts" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="他山之石，可以攻玉 (B站代码学习系列一)"/>
+<meta name="twitter:description" content="由于众所周知的一些原因，B站代码迫不得已&quot;被开源&quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。 由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：
+ B站代码结构学习(主要学习/app目录) B站典型的中间件/框架学习（主要学习/library目录） B站整体的技术栈分析（与业界的比较）。  今天先讲第一部分：B站代码结构学习。
+相关链接：
+1.一探B站后台架构
+B站代码结构学习 先贴一张B站的整体代码结构出来： 在这张结构图中，可以看到几个点：
+ 整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。 有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。 在.gitlab中，有比较规范的提交规范和MR规范。 代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel&#43;jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。 包管理方案使用的是vendor。  接下来我们再看下/app 目录下的具体结构： 解释说明如下：
+ admin: 后台管理模块 common:公共模块，实际上没咋用到 infra:各种消息相关的基础服务（canal/config/databus/discovery/notification） interface: 提供对外网关的服务 service: 提供RPC的内部服务 job:提供异步服务，主要用于处理消息队列 tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。  由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。
+接下来我们再看看具体某个业务的代码结构： 解释说明如下：
+ cmd:存放main.go和配置文件(使用toml格式)，作为启动入口 conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。 dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。 model:数据库相关结构体 server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。 service:提供服务实现，完成具体逻辑。 rpc（如有）：提供RPC调用方法。 版本三剑客。  由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。
+需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>他山之石，可以攻玉 (B站代码学习系列一)</title>
+	<link rel="stylesheet" href="https://example.com/css/style.min.037b6ee8f8c1baab6a3d0a9da11c3ff18a7552471f16c59fd98538d5ce99208b.css" integrity="sha256-A3tu6PjBuqtqPQqdoRw/8Yp1UkcfFsWf2YU41c6ZIIs=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://example.com">熊川樘的技术博客</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://example.com/posts/">文章</a>
+				<a href="https://example.com/about/">关于</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/" target="_blank" rel="noopener me" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://instagram.com/" target="_blank" rel="noopener me" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a><a href="https://github.com/" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://example.com/posts/">文章</a></li>
+			<li><a href="https://example.com/about/">关于</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 1, 0001</span></div>
+				<h1>他山之石，可以攻玉 (B站代码学习系列一)</h1>
+			</header>
+			<div class="content">
+				<p>由于众所周知的一些原因，B站代码迫不得已&quot;被开源&quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。
+由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：</p>
+<ol>
+<li>B站代码结构学习(主要学习/app目录)</li>
+<li>B站典型的中间件/框架学习（主要学习/library目录）</li>
+<li>B站整体的技术栈分析（与业界的比较）。</li>
+</ol>
+<p>今天先讲第一部分：B站代码结构学习。</p>
+<p>相关链接：</p>
+<p>1.<a href="https://studygolang.com/articles/19995#reply0">一探B站后台架构</a></p>
+<h1 id="b站代码结构学习">B站代码结构学习<a href="#b站代码结构学习" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+<p>先贴一张B站的整体代码结构出来：
+<img src="/media/files/2019/05/B%E7%AB%99%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="">
+在这张结构图中，可以看到几个点：</p>
+<ol>
+<li>整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。</li>
+<li>有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。</li>
+<li>在.gitlab中，有比较规范的提交规范和MR规范。</li>
+<li>代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel+jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。</li>
+<li>包管理方案使用的是vendor。</li>
+</ol>
+<p>接下来我们再看下/app 目录下的具体结构：
+<img src="/media/files/2019/05/B%E7%AB%99:app%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="">
+解释说明如下：</p>
+<ol>
+<li>admin: 后台管理模块</li>
+<li>common:公共模块，实际上没咋用到</li>
+<li>infra:各种消息相关的基础服务（canal/config/databus/discovery/notification）</li>
+<li>interface: 提供对外网关的服务</li>
+<li>service: 提供RPC的内部服务</li>
+<li>job:提供异步服务，主要用于处理消息队列</li>
+<li>tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。</li>
+</ol>
+<p>由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。</p>
+<p>接下来我们再看看具体某个业务的代码结构：
+<img src="/media/files/2019/05/B%E7%AB%99%E5%85%B7%E4%BD%93%E4%B8%9A%E5%8A%A1%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="">
+解释说明如下：</p>
+<ol>
+<li>cmd:存放main.go和配置文件(使用toml格式)，作为启动入口</li>
+<li>conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。</li>
+<li>dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。</li>
+<li>model:数据库相关结构体</li>
+<li>server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。</li>
+<li>service:提供服务实现，完成具体逻辑。</li>
+<li>rpc（如有）：提供RPC调用方法。</li>
+<li>版本三剑客。</li>
+</ol>
+<p>由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。</p>
+<p>需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://example.com/tags/golang-bilibili">Golang, bilibili</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>43 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>0001-01-01 08:05 &#43;0805</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://example.com/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>一套远程项目的技术点总结</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2022 <a href="https://example.com">John Doe</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://example.com/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://example.com/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>

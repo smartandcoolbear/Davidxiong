@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43;, node.js, think.js, vue on 熊川樘的技术博客</title>
+    <link>https://example.com/tags/c&#43;&#43;-node.js-think.js-vue/</link>
+    <description>Recent content in C&#43;&#43;, node.js, think.js, vue on 熊川樘的技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://example.com/tags/c++-node.js-think.js-vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一套远程项目的技术点总结</title>
+      <link>https://example.com/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</guid>
+      <description>要完成一个远程监控的项目，大体需要包含以下几个方面的工作：1.前端 2. 服务器端（后台） 3. 对于很多物联网的硬件来说，还有从相应硬件连接到服务器的一部分， 我将其称之为后端。对于每个部分，我希望自己都能掌握至少一种语言，一种框架，能够对整套流程的开发做到完全可知可控。现阶段，前端我希望能掌握 html+css+js的 三件套语言，以及vue.js的开发框架。服务器端掌握node.js的开发语言，以及think.js的开发框架。对于后台，掌握c++的开发，以及相应c+11的特性。至于嵌入式，那 暂时不是我的兴趣，我就不去太多关注了。
+对于一个PC端桌面应用而言，“QT-C++-Electron-前端”这套方案，我觉得是非常好的解决方案。这样最大的几个好处是：1.前后端分离，靠websocet通信，架构清晰。 2.前端页面漂亮，交互自然。 3.移植到网页版简单方便。 总的来说，相应的桌面程序可以又快又漂亮！
+对于服务器端，简单的几个必要工作就是：1.购买服务器，购买域名，配置nginx,配置或者购买数据库。2.搭建合适的开发框架，开搞~由于我现在做的项目还比较小， 暂时还没有涉及到分布式数据库的工作，所以对于分布式这块还不太了解。
+对于前端，掌握react.js, vue.js，特别是vue.js，我觉得前途比较大。</description>
+    </item>
+    
+  </channel>
+</rss>
