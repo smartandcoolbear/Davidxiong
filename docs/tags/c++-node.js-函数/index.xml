@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43;, node.js, 函数 on 熊川樘的技术博客</title>
+    <link>https://example.com/tags/c&#43;&#43;-node.js-%E5%87%BD%E6%95%B0/</link>
+    <description>Recent content in C&#43;&#43;, node.js, 函数 on 熊川樘的技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://example.com/tags/c++-node.js-%E5%87%BD%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;与nodejs的比较之函数探究</title>
+      <link>https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
+      <description>现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章， 我就以“函数”为切入点，说明一下两个语言有趣的地方。
+相关链接：
+1.C/C++函数指针的用法
+2.C++11中的std::function
+C++对于函数的理解和发展 在C++的发展历程中，“函数”其实一直以来都不是一等公民，即使随着C++不断的完善改进，函数越来越像一个普通变量，但由于历史原因，人们在C++中还是无法很顺畅的像使用一个普通对象一样使用函数。
+举例来说，一开始C++中对对象的认识是变量、参量、指针等，因此我们最为常见的函数传参是这样：
+void function(float* x, unsigned n) { },  其传入的参数基本都是各种变量类型。
+然而，随着技术的不断发展，将函数作为参数传入的需求越来越多。因此C++中慢慢延伸出这样的用法：
+int fun1(int i){ return i; } void fun2(int j, int (*p)(int)){ cout &amp;lt;&amp;lt; p(j); } void main() { int i=1; fun2(i,fun1); }  在这种用法中，由于无法直接将函数作为参数传入另一个函数中，因此人们不得已而为之的选择了利用指针，创造出函数指针这么一个东西。这个东西虽然能够在一定程度上实现传入函数的效果，然而依然有其局限性。 譬如：当需要传入的函数是某个类的成员函数时，事情就变得复杂了。因为指针一定是需要指向一个可靠的地址的，然而当这个类还没有实例化的情况下，其成员函数没有具体的地址，因此指针无法指向该成员函数。 举例来说：
+ class A { public: int fun1(int i){return i;}; }; void fun2(int j, int (A::*p)(int)){ cout &amp;lt;&amp;lt; p(j); } void main(){ A oba; int i = 1; fun2(i, oba.</description>
+    </item>
+    
+  </channel>
+</rss>

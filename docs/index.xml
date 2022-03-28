@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>熊川樘的技术博客</title>
+    <link>https://example.com/</link>
+    <description>Recent content on 熊川樘的技术博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://example.com/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/about/</guid>
+      <description>基本信息  姓名:熊川樘 教育经历: 2013级上海交通大学密西根学院电子科学与技术专业 个人博客: Davidxiong.cn Github: github.com/smartandcoolbear 手机: 17620490618 电子邮件: 334386876@qq.com  技能  熟悉运动控制，视觉，数据挖掘，机器学习等领域 掌握java,C,C++,R,Python,php等语言 熟悉常用数据结构,熟悉常用机器学习算法 英文口语流利，GRE：321，TOEFL：107，考取上海市中级口译证书  实习经历  2015.07-2015.09:阿里巴巴网络技术有限公司（数据挖掘，机器学习），任算法工程师，工作内容包括：  针对阿里云产品，在ODPS平台上，通过SQL拉取并清洗数据 基于用户特征和时间序列，利用arima、SVM、GBDT等模型，预测云产品订单的每月新增量及释放量（预测18周） 算法精度达85%以上   2015.04-2015.07:大疆创新科技有限公司（Onboard SDK开发），任软件工程师，工作内容包括:  协助开发Onboard SDK, 编写“经纬100”型号无人机windows系统下通信协议 编写Onboard SDK在Windows系统下的应用程序，用以调试Onboard SDK 利用“经纬100”相应视觉配件“Guidance”,通过双目定位，编写程序控制无人机自动精确降落   2014.11-2014.12:密西根中国中心（组织及随行翻译），任项目助理及随行翻译，工作内容包括：  接洽由密西根州州长所率领的商务代表团 作为Corrigan货运公司随行翻译参与同上汽进出口公司、延锋汽车内饰有限公司、采埃孚集团的商务会谈    论文发表  Xiong, Chuantang, and Xu Zhang. An exclusive human-robot interaction method on the turtlebot platform, Robotics and Biomimetics (ROBIO), 2013 IEEE International Conference on.</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;11一些新特性汇总</title>
+      <link>https://example.com/posts/2016/2016-10-16-c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/2016-10-16-c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</guid>
+      <description>项目中用到了一些C++11的特性，主要包括：1.Lambda表达式与std::bind, std::function 2.auto自动类型推导 3.nullptr空指针 4.智能指针。此外，还有一些对于template的使用，动态DLL的调用， 以及程序架构的分析，由于不属于C++11这块的东西，因此都放在下次再做介绍。
+相关链接：
+1.C++ 中的 Lambda 表达式
+2.C++11 新特性：Lambda 表达式
+3.Lambda 表达式有何用处？如何使用？
+4.C/C++ 中 0 与 NULL 区别是什么？用 delete 时，用 p=0，还是用 p=NULL 好？为什么？
+5.c++ 智能指针用法详解
+Lamda的表达式理解与使用 Lamda表达式的描述是这样：In C++11, a lambda expression—often called a lambda—is a convenient way of defining an anonymous function object right at the location where it is invoked or passed as an argument to a function (在 C++ 11 中，lambda 表达式（通常称为 &amp;ldquo;lambda&amp;rdquo;）是一种在被调用的位置或作为参数传递给函数的位置定义匿名函数对象的简便方法)。我的理解是，简单来讲，就是将一个匿名函数作为参数传递给另一个函数，并在另一个函数中进行调用。
+ Lamda的表达式各部分  ISO C++ 标准展示了作为第三个参数传递给 std::sort() 函数的简单 lambda：</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43;与nodejs的比较之函数探究</title>
+      <link>https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
+      <description>现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章， 我就以“函数”为切入点，说明一下两个语言有趣的地方。
+相关链接：
+1.C/C++函数指针的用法
+2.C++11中的std::function
+C++对于函数的理解和发展 在C++的发展历程中，“函数”其实一直以来都不是一等公民，即使随着C++不断的完善改进，函数越来越像一个普通变量，但由于历史原因，人们在C++中还是无法很顺畅的像使用一个普通对象一样使用函数。
+举例来说，一开始C++中对对象的认识是变量、参量、指针等，因此我们最为常见的函数传参是这样：
+void function(float* x, unsigned n) { },  其传入的参数基本都是各种变量类型。
+然而，随着技术的不断发展，将函数作为参数传入的需求越来越多。因此C++中慢慢延伸出这样的用法：
+int fun1(int i){ return i; } void fun2(int j, int (*p)(int)){ cout &amp;lt;&amp;lt; p(j); } void main() { int i=1; fun2(i,fun1); }  在这种用法中，由于无法直接将函数作为参数传入另一个函数中，因此人们不得已而为之的选择了利用指针，创造出函数指针这么一个东西。这个东西虽然能够在一定程度上实现传入函数的效果，然而依然有其局限性。 譬如：当需要传入的函数是某个类的成员函数时，事情就变得复杂了。因为指针一定是需要指向一个可靠的地址的，然而当这个类还没有实例化的情况下，其成员函数没有具体的地址，因此指针无法指向该成员函数。 举例来说：
+ class A { public: int fun1(int i){return i;}; }; void fun2(int j, int (A::*p)(int)){ cout &amp;lt;&amp;lt; p(j); } void main(){ A oba; int i = 1; fun2(i, oba.</description>
+    </item>
+    
+    <item>
+      <title>std::bind 和template的使用</title>
+      <link>https://example.com/posts/2016/2016-10-23-stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/2016-10-23-stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <description>接上次的笔记，继续整理std::bind,std::function等函数，以及template的一些使用说明。
+相关链接：
+1.模板(Templates)
+2.C++中的类模板详细讲述
+3.C++11中的std::bind
+4.什么是函数式编程思维？
+Template的理解与使用 使用模板技术其实原因很简单，就是为了泛型编程。主要可以分为模板函数和模板类两个方面。具体来说，模板(Templates)使得我们可以生成通用的函数或类，这些函数或类能够接受任意数据类型的参数，可返回任意类型的值，而不需要对所有可能的数据类型进行函数重载。这在一定程度上实现了宏（macro）的作用。它们的原型定义可以是下面两种中的任何一个：
+template &amp;lt;class identifier&amp;gt; function_declaration; template &amp;lt;typename identifier&amp;gt; function_declaration;  上面两种原型定义的不同之处在关键字class 或 typename的使用。它们实际是完全等价的，因为两种表达的意思和执行都一模一样。
+举例来说：
+template&amp;lt;class 模板参数表&amp;gt; class 类名｛ // 类定义．．．．．．   };
+template 是声明类模板的关键字，表示声明一个模板，模板参数可以是一个，也可以是多个，可以是类型参数 ，也可以是非类型参数。类型参数由关键字class或typename及其后面的标识符构成。非类型参数由一个普通参数构成，代表模板定义中的一个常量。
+模板函数：
+#include &amp;lt;iostream.h&amp;gt; template &amp;lt;class T&amp;gt; T GetMax (T a, T b) { T result; result = (a&amp;gt;b)? a : b; return (result); } int main () { int i=5, j=6, k; long l=10, m=5, n; k=GetMax(i,j); n=GetMax(l,m); cout &amp;lt;&amp;lt; k &amp;lt;&amp;lt; endl; cout &amp;lt;&amp;lt; n &amp;lt;&amp;lt; endl; return 0; }  类模板：</description>
+    </item>
+    
+    <item>
+      <title>Websocket简析</title>
+      <link>https://example.com/posts/2016/2016-09-10-websocket/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/2016-09-10-websocket/</guid>
+      <description>这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。 所以这里将websocket相应的信息整理一下。
+相关链接：
+1.Websocket协议
+2.Websocket协议解析
+#何谓Websocket？
+WebSocket是HTML5出的东西（协议）， 其实可以说与http基本没有关系。相对于HTTP这种非持久的协议来说，Websocket是一个持久化的协议，并且是一个双工的通信形式。
+简单的举个例子吧，用目前应用比较广泛的PHP生命周期来解释：
+HTTP的生命周期通过Request来界定，也就是一个Request 一个Response，那么在HTTP1.0中，这次HTTP请求就结束了。 在HTTP1.1中进行了改进，使得有一个keep-alive，也就是说，在一个HTTP连接中，可以发送多个Request，接收多个Response。 但是请记住 Request = Response ， 在HTTP中永远是这样，也就是说一个request只能有一个response。而且这个response也是被动的，不能主动发起。
+但是对于Websocket,首先它是基于HTTP协议的，或者说借用了HTTP的协议来完成一部分握手。 在握手阶段是一样的：
+首先我们来看个典型的Websocket握手（借用Wikipedia的。。）
+GET /chat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+Origin: http://example.com
+熟悉HTTP的童鞋可能发现了，这段类似HTTP协议的握手请求中，多了几个东西：
+Upgrade: websocket
+Connection: Upgrade
+这个就是Websocket的核心了，告诉Apache、Nginx等服务器：注意啦，我发起的是Websocket协议，快点帮我找到对应的助理处理~不是那个老土的HTTP。
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+首先，Sec-WebSocket-Key 是一个Base64 encode的值，这个是浏览器随机生成的，告诉服务器：泥煤，不要忽悠窝，我要验证尼是不是真的是Websocket助理。
+然后，Sec_WebSocket-Protocol 是一个用户定义的字符串，用来区分同URL下，不同的服务所需要的协议。简单理解：今晚我要服务A，别搞错啦~
+最后，Sec-WebSocket-Version 是告诉服务器所使用的Websocket Draft（协议版本），在最初的时候，Websocket协议还在 Draft 阶段，各种奇奇怪怪的协议都有，而且还有很多期奇奇怪怪不同的东西，什么Firefox和Chrome用的不是一个版本之类的，当初Websocket协议太多可是一个大难题。。不过现在还好，已经定下来啦~大家都使用的一个东西~ 脱水：服务员，我要的是13岁的噢→_→
+然后服务器会返回下列东西，表示已经接受到请求， 成功建立Websocket啦！
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket</description>
+    </item>
+    
+    <item>
+      <title>一套远程项目的技术点总结</title>
+      <link>https://example.com/posts/2016/2016-12-18-%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2016/2016-12-18-%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</guid>
+      <description>要完成一个远程监控的项目，大体需要包含以下几个方面的工作：1.前端 2. 服务器端（后台） 3. 对于很多物联网的硬件来说，还有从相应硬件连接到服务器的一部分， 我将其称之为后端。对于每个部分，我希望自己都能掌握至少一种语言，一种框架，能够对整套流程的开发做到完全可知可控。现阶段，前端我希望能掌握 html+css+js的 三件套语言，以及vue.js的开发框架。服务器端掌握node.js的开发语言，以及think.js的开发框架。对于后台，掌握c++的开发，以及相应c+11的特性。至于嵌入式，那 暂时不是我的兴趣，我就不去太多关注了。
+对于一个PC端桌面应用而言，“QT-C++-Electron-前端”这套方案，我觉得是非常好的解决方案。这样最大的几个好处是：1.前后端分离，靠websocet通信，架构清晰。 2.前端页面漂亮，交互自然。 3.移植到网页版简单方便。 总的来说，相应的桌面程序可以又快又漂亮！
+对于服务器端，简单的几个必要工作就是：1.购买服务器，购买域名，配置nginx,配置或者购买数据库。2.搭建合适的开发框架，开搞~由于我现在做的项目还比较小， 暂时还没有涉及到分布式数据库的工作，所以对于分布式这块还不太了解。
+对于前端，掌握react.js, vue.js，特别是vue.js，我觉得前途比较大。</description>
+    </item>
+    
+    <item>
+      <title>他山之石，可以攻玉 (B站代码学习系列一)</title>
+      <link>https://example.com/posts/2019/2019-5-12-%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/posts/2019/2019-5-12-%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</guid>
+      <description>由于众所周知的一些原因，B站代码迫不得已&amp;quot;被开源&amp;quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。 由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：
+ B站代码结构学习(主要学习/app目录) B站典型的中间件/框架学习（主要学习/library目录） B站整体的技术栈分析（与业界的比较）。  今天先讲第一部分：B站代码结构学习。
+相关链接：
+1.一探B站后台架构
+B站代码结构学习 先贴一张B站的整体代码结构出来： 在这张结构图中，可以看到几个点：
+ 整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。 有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。 在.gitlab中，有比较规范的提交规范和MR规范。 代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel+jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。 包管理方案使用的是vendor。  接下来我们再看下/app 目录下的具体结构： 解释说明如下：
+ admin: 后台管理模块 common:公共模块，实际上没咋用到 infra:各种消息相关的基础服务（canal/config/databus/discovery/notification） interface: 提供对外网关的服务 service: 提供RPC的内部服务 job:提供异步服务，主要用于处理消息队列 tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。  由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。
+接下来我们再看看具体某个业务的代码结构： 解释说明如下：
+ cmd:存放main.go和配置文件(使用toml格式)，作为启动入口 conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。 dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。 model:数据库相关结构体 server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。 service:提供服务实现，完成具体逻辑。 rpc（如有）：提供RPC调用方法。 版本三剑客。  由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。
+需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。</description>
+    </item>
+    
+  </channel>
+</rss>

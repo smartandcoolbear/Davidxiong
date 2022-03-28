@@ -1,0 +1,658 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Posts on 熊川樘的技术博客</title>
+		<link>https://example.com/posts/</link>
+		<description>Recent content in Posts on 熊川樘的技术博客</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+		<atom:link href="https://example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>C&#43;&#43;11一些新特性汇总</title>
+			<link>https://example.com/posts/2016/2016-10-16-c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>https://example.com/posts/2016/2016-10-16-c&#43;&#43;11%E4%B8%80%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E6%B1%87%E6%80%BB/</guid>
+			<description>项目中用到了一些C++11的特性，主要包括：1.Lambda表达式与std::bind, std::function 2.auto自动类型推导 3.nullptr空指针 4.智能指针。此外，还有一些对于template的使用，动态DLL的调用， 以及程序架构的分析，由于不属于C++11这块的东西，因此都放在下次再做介绍。
+相关链接：
+1.C++ 中的 Lambda 表达式
+2.C++11 新特性：Lambda 表达式
+3.Lambda 表达式有何用处？如何使用？
+4.C/C++ 中 0 与 NULL 区别是什么？用 delete 时，用 p=0，还是用 p=NULL 好？为什么？
+5.c++ 智能指针用法详解
+Lamda的表达式理解与使用 Lamda表达式的描述是这样：In C++11, a lambda expression—often called a lambda—is a convenient way of defining an anonymous function object right at the location where it is invoked or passed as an argument to a function (在 C++ 11 中，lambda 表达式（通常称为 &amp;ldquo;lambda&amp;rdquo;）是一种在被调用的位置或作为参数传递给函数的位置定义匿名函数对象的简便方法)。我的理解是，简单来讲，就是将一个匿名函数作为参数传递给另一个函数，并在另一个函数中进行调用。
+ Lamda的表达式各部分  ISO C++ 标准展示了作为第三个参数传递给 std::sort() 函数的简单 lambda：</description>
+			<content type="html"><![CDATA[<p>项目中用到了一些C++11的特性，主要包括：1.Lambda表达式与std::bind, std::function 2.auto自动类型推导 3.nullptr空指针 4.智能指针。此外，还有一些对于template的使用，动态DLL的调用，
+以及程序架构的分析，由于不属于C++11这块的东西，因此都放在下次再做介绍。</p>
+<p>相关链接：</p>
+<p>1.<a href="https://msdn.microsoft.com/zh-cn/library/dd293608.aspx">C++ 中的 Lambda 表达式</a></p>
+<p>2.<a href="https://www.devbean.net/2012/05/cpp11-lambda/">C++11 新特性：Lambda 表达式</a></p>
+<p>3.<a href="https://www.zhihu.com/question/20125256">Lambda 表达式有何用处？如何使用？</a></p>
+<p>4.<a href="https://www.zhihu.com/question/22203461">C/C++ 中 0 与 NULL 区别是什么？用 delete 时，用 p=0，还是用 p=NULL 好？为什么？</a></p>
+<p>5.<a href="http://www.cnblogs.com/TenosDoIt/p/3456704.html">c++ 智能指针用法详解</a></p>
+<h1 id="lamda的表达式理解与使用">Lamda的表达式理解与使用</h1>
+<p>Lamda表达式的描述是这样：In C++11, a lambda expression—often called a lambda—is a convenient way of defining an anonymous function object right at the location where it is invoked or passed as an argument to a function
+(在 C++ 11 中，lambda 表达式（通常称为 &ldquo;lambda&rdquo;）是一种在被调用的位置或作为参数传递给函数的位置定义匿名函数对象的简便方法)。我的理解是，简单来讲，就是将一个匿名函数作为参数传递给另一个函数，并在另一个函数中进行调用。</p>
+<ol>
+<li>Lamda的表达式各部分</li>
+</ol>
+<p>ISO C++ 标准展示了作为第三个参数传递给 std::sort() 函数的简单 lambda：</p>
+<pre><code>#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+
+void abssort(float* x, unsigned n) {
+    std::sort(x, x + n,
+        // Lambda expression begins
+        [](float a, float b) {
+            return (std::abs(a) &lt; std::abs(b));
+        } // end of lambda expression
+    );
+}
+</code></pre>
+<p>此图显示了 lambda 的组成部分：</p>
+<p><img src="/media/files/2016/10/01.jpeg" alt=""></p>
+<p>1.1 Capture子句</p>
+<p>Capture子句是指将外部变量传递到lamda表达式之中，传递的形式有以下六种：</p>
+<pre><code>[] Capture nothing (or, a scorched earth strategy?)
+[&amp;] Capture any referenced variable by reference
+[=] Capture any referenced variable by making a copy
+[=, &amp;foo] Capture any referenced variable by making a copy, but capture variable foo by reference
+[bar] Capture bar by making a copy; don't copy anything else
+[this] Capture the this pointer of the enclosing class
+</code></pre>
+<p>1.2 参数列表（可选）</p>
+<p>除了捕获变量，lambda 还可接受输入参数。参数列表（在标准语法中称为 lambda 声明符）是可选的，它在大多数方面类似于函数的参数列表。</p>
+<p>1.3 可变规范（可选）</p>
+<p>这个暂不了解</p>
+<p>1.4 异常规范（可选）</p>
+<p>这里是利用throw()来抛出异常，避免程序挂掉。</p>
+<p>1.5 尾随返回类型（可选）</p>
+<p>lamda表达式将会自动推断返回类型，因此这个返回类型是可选的参数。不过也可以定义好返回类型。</p>
+<p>1.6 &ldquo;Lambda体&rdquo;</p>
+<p>Lambda体即为一般的函数体。</p>
+<p>举例来说，</p>
+<pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main()
+{
+   int m = 0;
+   int n = 0;
+   [&amp;, n] (int a) mutable { m = ++n + a; }(4);
+   cout &lt;&lt; m &lt;&lt; endl &lt;&lt; n &lt;&lt; endl;
+}
+</code></pre>
+<p>这里的表示m是引用捕获，n是值捕获。 变量a传入的值是4，最后输出。</p>
+<ol start="2">
+<li>Lambda的表达式使用</li>
+</ol>
+<p>最后我想说下lambda表达式的意义。很多人一开始会觉得lamda表达式就是方便写匿名函数的工具。例如对于一开始提到的sort函数，通过lambda表达式就可以不用单独定义一个函数，再把函数指针传进去这么麻烦的操作了。但我觉得lambda表达式的意义更多的是处理回调函数，做异步通信用。这种方式其实在javascript中非常常用，这也说明了一种趋势，就是不管什么语言，最后都会取长补短，变得互相接近，互相类似。</p>
+<p>可能有的同志就不服气了，“嘿，处理这些回调，我就是想用个函数指针，你要咋地吧？”，那就再考虑这样一种情况： 我的回调函数需要记录调用的次数，或者说，每执行一次，counter计数器要加1。比如对于这个回调函数的需求 统计学生人数,简单的就是你先来个int i=0,每遍历一个学生就+1,可是,你无法把这个int放入一个函数,因为函数不是类,不会记录你的这个int的位置(无论引用或指针),也就做不到每遍历一个学生就让这个i去+1.所以,光靠函数就使不上劲了,换一种方法,在C++里我们可以这么做:</p>
+<pre><code>class 学生遍历器 {
+public:
+学生遍历器( 学生们&amp; );
+void 遍历() { for(....) { 遍历具体方法() } };
+virtual void 遍历具体方法(学生&amp;)=0;
+};
+
+class 学生统计器 : public 学生遍历器 {
+public:
+............
+virtual void 遍历具体方法(学生&amp;) { ++counter; }
+private:
+int counter=0;
+};
+</code></pre>
+<p>但是这样下次如果我需要修改，就需要又继承一次类，最后类会越来越多。这就很不好了。如果使用了lambda表达式，那就可以这样写：</p>
+<pre><code>class 不蛋疼的学生遍历器 {
+public:
+不蛋疼的学生遍历器( 学生们&amp; );
+template&lt;typename Fun&gt; 
+void 遍历(const Fun&amp; fun) { for(...) { fun(学生实力); } };
+};
+
+不蛋疼的学生遍历器 iter;
+int counter=0;
+iter.遍历( [&amp;counter](学生&amp;){ ++counter; } ) ;
+cout&lt;&lt;&quot;学生人数是&quot;&lt;&lt;counter&lt;&lt;&quot;个&quot;&lt;&lt;endl;
+</code></pre>
+<p>这就是用lambda表达式捕获的好处。</p>
+<h1 id="auto自动类型推导">auto自动类型推导</h1>
+<p>顾名思义， auto自动类型推导就是自动识别类型，无需自己定义返回类型。这个的好处也很简单，对于泛型编程，不用定义多个重载函数，只需要一个auto返回即可。但是用auto类型也有风险，就是不用的类型能的使用一些operator不一样，因此如果不考虑变量类型的话，有可能会出现使用的operator的不适配情况。</p>
+<h1 id="nullptr空指针">nullptr空指针</h1>
+<p>在C++标准中，我们可以见到一个词语叫做null pointer constant，其实在C++11标准前，是只承认0为null pointer constant的。所以，在C++中，我们也经常能听到一个说法，就是赋予null pointer，应该是使用0，而非NULL。而nullptr pointer constant这个词语在C++11发布后，终于再添了一个成员，就是nullptr。而与NULL本质不同的是，nullptr是有类型的（放了在stddef头文件中），类型是 typdef decltype(nullptr) nullptr_t; 而正是因为是有类型的，这给我们编译器实现nullptr的时候带来了更多细节的考虑，当然也给了使用者更多的保障，所以如果你的编译器支持nullptr，请一定使用nullptr！</p>
+<p>而nullptr的出现背景，其实是很简单的，C++哲学上来说就是C++之父一直对null pointer没有一个正式的表示感到非常不满，而更工程的来说，就是关于重载这个问题。</p>
+<pre><code>void f(void*)
+{
+}
+
+void f(int)
+{
+}
+
+int main()
+{
+    f(0); // what function will be called?
+}
+</code></pre>
+<p>而引入了nullptr，这个问题就得到了真正解决，会很顺利的调到void f(void*)这个版本。</p>
+<h1 id="智能指针">智能指针</h1>
+<p>本文介绍c++里面的四个智能指针: auto_ptr, shared_ptr, weak_ptr, unique_ptr 其中后三个是c++11支持，并且第一个已经被c++11弃用。</p>
+<p>为什么要使用智能指针：我们知道c++的内存管理是让很多人头疼的事，当我们写一个new语句时，一般就会立即把delete语句直接也写了，但是我们不能避免程序还未执行到delete时就跳转了或者在函数中没有执行到最后的delete语句就返回了，如果我们不在每一个可能跳转或者返回的语句前释放资源，就会造成内存泄露。使用智能指针可以很大程度上的避免这个问题，因为智能指针就是一个类，当超出了类的作用域是，类会自动调用析构函数，析构函数会自动释放资源（划重点！）。</p>
+<p>这里我就直接贴知乎上的回答了：</p>
+<p>智能指针和普通指针的区别在于智能指针实际上是对普通指针加了一层封装机制，这样的一层封装机制的目的是为了使得智能指针可以方便的管理一个对象的生命期。</p>
+<p>在C++中，我们知道，如果使用普通指针来创建一个指向某个对象的指针，那么在使用完这个对象之后我们需要自己删除它，例如：</p>
+<pre><code>ObjectType* temp_ptr = new ObjectType();
+temp_ptr-&gt;foo();
+delete temp_ptr;
+</code></pre>
+<p>很多材料上都会指出说如果程序员忘记在调用完temp_ptr之后删除temp_ptr，那么会造成一个悬挂指针(dangling pointer)，也就是说这个指针现在指向的内存区域其内容程序员无法把握和控制，也可能非常容易造成内存泄漏。</p>
+<p>可是事实上，不止是“忘记”，在上述的这一段程序中，如果foo()在运行时抛出异常，那么temp_ptr所指向的对象仍然不会被安全删除。</p>
+<p>在这个时候，智能指针的出现实际上就是为了可以方便的控制对象的生命期，在智能指针中，一个对象什么时候和在什么条件下要被析构或者是删除是受智能指针本身决定的，用户并不需要管理。</p>
+<p>根据具体的条件，我们一般会讨论这样几种智能指针，而如下所说的这些智能指针也都是在boost library里面定义的 (<a href="http://www.boost.org/doc/libs/1_50_0/libs/smart_ptr/smart_ptr.htm">http://www.boost.org/doc/libs/1_50_0/libs/smart_ptr/smart_ptr.htm</a>)：</p>
+<ol>
+<li>scoped_ptr:</li>
+</ol>
+<p>这是比较简单的一种智能指针，正如其名字所述，scoped_ptr所指向的对象在作用域之外会自动得到析构，一个例子是：http://www.boost.org/doc/libs/1_50_0/libs/smart_ptr/scoped_ptr.htm</p>
+<p>此外，scoped_ptr是non-copyable的，也就是说你不能去尝试复制一个scoped_ptr的内容到另外一个scoped_ptr中，这也是为了防止错误的多次析构同一个指针所指向的对象。</p>
+<ol start="2">
+<li>shared_ptr:</li>
+</ol>
+<p>很多人理解的智能指针其实是shared_ptr这个范畴。</p>
+<p>shared_ptr中所实现的本质是引用计数(reference counting)，也就是说shared_ptr是支持复制的，复制一个shared_ptr的本质是对这个智能指针的引用次数加1，而当这个智能指针的引用次数降低到0的时候，该对象自动被析构。</p>
+<p>需要特别指出的是，如果shared_ptr所表征的引用关系中出现一个环，那么环上所述对象的引用次数都肯定不可能减为0那么也就不会被删除，为了解决这个问题引入了weak_ptr。</p>
+<ol start="3">
+<li>weak_ptr:</li>
+</ol>
+<p>对weak_ptr起的作用，很多人有自己不同的理解，我理解的weak_ptr和shared_ptr的最大区别在于weak_ptr在指向一个对象的时候不会增加其引用计数，因此你可以用weak_ptr去指向一个对象并且在weak_ptr仍然指向这个对象的时候析构它，此时你再访问weak_ptr的时候，weak_ptr其实返回的会是一个空的shared_ptr。</p>
+<p>实际上，通常shared_ptr内部实现的时候维护的就不是一个引用计数，而是两个引用计数，一个表示strong reference，也就是用shared_ptr进行复制的时候进行的计数，一个是weak reference，也就是用weak_ptr进行复制的时候的计数。weak_ptr本身并不会增加strong reference的值，而strong reference降低到0，对象被自动析构。</p>
+<p>为什么要采取weak_ptr来解决刚才所述的环状引用的问题呢？需要注意的是环状引用的本质矛盾是不能通过任何程序设计语言的方式来打破的，为了解决环状引用，第一步首先得打破环，也就是得告诉C++，这个环上哪一个引用是最弱的，是可以被打破的，因此在一个环上只要把原来的某一个shared_ptr改成weak_ptr，实质上这个环就可以被打破了，原有的环状引用带来的无法析构的问题也就随之得到了解决。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>C&#43;&#43;与nodejs的比较之函数探究</title>
+			<link>https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>https://example.com/posts/2016/2017-03-05-c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
+			<description>现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章， 我就以“函数”为切入点，说明一下两个语言有趣的地方。
+相关链接：
+1.C/C++函数指针的用法
+2.C++11中的std::function
+C++对于函数的理解和发展 在C++的发展历程中，“函数”其实一直以来都不是一等公民，即使随着C++不断的完善改进，函数越来越像一个普通变量，但由于历史原因，人们在C++中还是无法很顺畅的像使用一个普通对象一样使用函数。
+举例来说，一开始C++中对对象的认识是变量、参量、指针等，因此我们最为常见的函数传参是这样：
+void function(float* x, unsigned n) { },  其传入的参数基本都是各种变量类型。
+然而，随着技术的不断发展，将函数作为参数传入的需求越来越多。因此C++中慢慢延伸出这样的用法：
+int fun1(int i){ return i; } void fun2(int j, int (*p)(int)){ cout &amp;lt;&amp;lt; p(j); } void main() { int i=1; fun2(i,fun1); }  在这种用法中，由于无法直接将函数作为参数传入另一个函数中，因此人们不得已而为之的选择了利用指针，创造出函数指针这么一个东西。这个东西虽然能够在一定程度上实现传入函数的效果，然而依然有其局限性。 譬如：当需要传入的函数是某个类的成员函数时，事情就变得复杂了。因为指针一定是需要指向一个可靠的地址的，然而当这个类还没有实例化的情况下，其成员函数没有具体的地址，因此指针无法指向该成员函数。 举例来说：
+ class A { public: int fun1(int i){return i;}; }; void fun2(int j, int (A::*p)(int)){ cout &amp;lt;&amp;lt; p(j); } void main(){ A oba; int i = 1; fun2(i, oba.</description>
+			<content type="html"><![CDATA[<p>现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章，
+我就以“函数”为切入点，说明一下两个语言有趣的地方。</p>
+<p>相关链接：</p>
+<p>1.<a href="http://www.cnblogs.com/TenosDoIt/p/3164081.html">C/C++函数指针的用法</a></p>
+<p>2.<a href="http://www.jellythink.com/archives/771">C++11中的std::function</a></p>
+<h1 id="c对于函数的理解和发展">C++对于函数的理解和发展</h1>
+<p>在C++的发展历程中，“函数”其实一直以来都不是一等公民，即使随着C++不断的完善改进，函数越来越像一个普通变量，但由于历史原因，人们在C++中还是无法很顺畅的像使用一个普通对象一样使用函数。</p>
+<p>举例来说，一开始C++中对对象的认识是变量、参量、指针等，因此我们最为常见的函数传参是这样：</p>
+<pre><code>void function(float* x, unsigned n) {
+},
+</code></pre>
+<p>其传入的参数基本都是各种变量类型。</p>
+<p>然而，随着技术的不断发展，将函数作为参数传入的需求越来越多。因此C++中慢慢延伸出这样的用法：</p>
+<pre><code>int fun1(int i){ 
+    return   i; 
+} 
+void fun2(int j, int (*p)(int)){ 
+    cout &lt;&lt; p(j); 
+} 
+void main() { 
+    int   i=1; 
+    fun2(i,fun1); 
+} 
+</code></pre>
+<p>在这种用法中，由于无法直接将函数作为参数传入另一个函数中，因此人们不得已而为之的选择了利用指针，创造出函数指针这么一个东西。这个东西虽然能够在一定程度上实现传入函数的效果，然而依然有其局限性。
+譬如：当需要传入的函数是某个类的成员函数时，事情就变得复杂了。因为指针一定是需要指向一个可靠的地址的，然而当这个类还没有实例化的情况下，其成员函数没有具体的地址，因此指针无法指向该成员函数。
+举例来说：</p>
+<pre><code> class A { 
+      public: 
+        int fun1(int i){return i;}; 
+    }; 
+
+    void fun2(int j, int (A::*p)(int)){ 
+        cout &lt;&lt; p(j); 
+    } 
+
+    void main(){ 
+        A oba; 
+        int i = 1; 
+        fun2(i, oba.fun1);     //this   is   an   error 
+    }
+</code></pre>
+<p>这个函数指针的传递形式就是错误的，因为跟普通函数或者类中的static函数不一样，这里的类成员函数没有被真正的实例化，因此函数指针也指不到其对应的地址。正确的写法应该是：</p>
+<pre><code>class A{ 
+public: 
+  int i1; 
+  int fun1(int i){ 
+    return   i; 
+    }; 
+}; 
+
+void main(){ 
+int (A::*fp1)(int);         //声明fp1为class   A中的成员函数指针 
+int A::*ip1;                       //声明ip1为class   A中的成员变量指针 
+fp1=&amp;A::fun1;                     //初始化fp1 
+ip1=&amp;A::i1;                         //初始化ip1   
+A   oba; 
+oba.*ip1=2; 
+(oba.*fp1)(oba.*ip1); 
+}
+</code></pre>
+<p>接下来就可以构造含有成员函数指针参数的函数了：</p>
+<pre><code>void fun2(int j, A ob, int (A::*p)(int)){ 
+     cout &lt;&lt; (ob.*p)(j); 
+ }
+</code></pre>
+<p>注意声明时必须加上一个对象参数A   ob，因为只有把这个偏移和具体对象的开始地址结合，才能得到实际地址。</p>
+<p>在C++不断的修改完善中，直至C++11提出了std::function这一用法。到了这一步，std::function基本可以实现将函数当做普通变量使用了。举例如下：</p>
+<pre><code>    void GetParameters(std::function&lt;void(const QJsonObject&amp;)&gt;) override;
+    
+    void DJIP3Agent::GetParameters(std::function&lt;void(const QJsonObject&amp;)&gt; cb)
+    {
+        QJsonObject obj, value;
+        obj[&quot;CMD&quot;] = &quot;GetParameters&quot;;
+        sendJson(obj, cb);
+    }
+</code></pre>
+<p>这是项目中的一段代码，在这段代码中，cb这个回调函数已经很可以很方便的作为参数传入传出，进行调用了。</p>
+<p>同样，我们再以普通函数，类成员函数，类静态函数，以及lambda表达式举例，以说明std::function这种把函数直接当成对象的处理形式，是多么的优雅。</p>
+<pre><code>  #include &lt;functional&gt;
+  #include &lt;iostream&gt;
+  using namespace std;
+
+  std::function&lt; int(int)&gt; Functional;
+
+  // 普通函数
+  int TestFunc(int a)
+  {
+      return a;
+  }
+
+  // Lambda表达式
+  auto lambda = [](int a)-&gt;int{ return a; };
+
+
+  // 1.类成员函数
+  // 2.类静态函数
+  class TestClass
+  {
+  public:
+      int ClassMember(int a) { return a; }
+      static int StaticMember(int a) { return a; }
+  };
+</code></pre>
+<p>在以上的四种函数里，用std::function都可以很方便的指代。具体如下：</p>
+<pre><code>  int main(){
+      // 普通函数
+      Functional = TestFunc;
+      int result = Functional(10);
+      cout &lt;&lt; &quot;普通函数：&quot;&lt;&lt; result &lt;&lt; endl;
+
+      // Lambda表达式
+      Functional = lambda;
+      result = Functional(20);
+      cout &lt;&lt; &quot;Lambda表达式：&quot;&lt;&lt; result &lt;&lt; endl;
+
+      // 类成员函数
+      TestClass testObj;
+      Functional = std::bind(&amp;TestClass::ClassMember, testObj, std::placeholders::_1);
+      result = Functional(40);
+      cout &lt;&lt; &quot;类成员函数：&quot;&lt;&lt; result &lt;&lt; endl;
+
+      // 类静态函数
+      Functional = TestClass::StaticMember;
+      result = Functional(50);
+      cout &lt;&lt; &quot;类静态函数：&quot;&lt;&lt; result &lt;&lt; endl;
+
+      return 0;
+  }
+</code></pre>
+<p>特别是对照利用std::function获取类成员函数和利用函数指针获取成员函数，发现代码简直不是好看了一点点。因此，直至C+11，才能说C++里将函数真正的当成了一个对象进行处理。</p>
+<h1 id="nodejs对于函数的理解和发展">node.js对于函数的理解和发展</h1>
+<p>然而，对于node.js而言，一开始就直接把函数定义成了一等公民,不仅如此，根本没有什么boolean, int, float之类的数据类型，通通var或者let。任何一个node.js的程序员都可以很流畅的写出：</p>
+<pre><code>     var add_one = function(var a){
+        return a+1;
+      }
+      var add_two = function(var add_one, var a){
+        var temp = add_one(a);
+        return add_one(temp)；
+      }
+</code></pre>
+<p>这样的函数。这明显看起来比C++中std::function还要简洁美观。同时，由于node.js中对于函数的传出传入很自然，因此特别适合做一些带回调函数的工作。那这也意味着，非常适合用来处理异步操作。这也就引入了C++与node.js最大的区别了：一个适合做同步操作，是编译型语言；一个适合做异步操作，是解释行语言。</p>
+<p>下一章中，我们还会探讨c++与node.js由于底层设计的不同，导致两者对于很多设计模式的区别。例如C++中的工厂模式，Java中加入反射的动态工厂模式等。这些设计模式其实说实在话，都是在补C++原有设计不足的坑。如果C++设计的精巧一些，根本不会有这些设计模式的出现，而都是很自然的利用函数生成函数，或者是利用类生成类。这个我们就留到下章再讲。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>std::bind 和template的使用</title>
+			<link>https://example.com/posts/2016/2016-10-23-stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>https://example.com/posts/2016/2016-10-23-stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+			<description>接上次的笔记，继续整理std::bind,std::function等函数，以及template的一些使用说明。
+相关链接：
+1.模板(Templates)
+2.C++中的类模板详细讲述
+3.C++11中的std::bind
+4.什么是函数式编程思维？
+Template的理解与使用 使用模板技术其实原因很简单，就是为了泛型编程。主要可以分为模板函数和模板类两个方面。具体来说，模板(Templates)使得我们可以生成通用的函数或类，这些函数或类能够接受任意数据类型的参数，可返回任意类型的值，而不需要对所有可能的数据类型进行函数重载。这在一定程度上实现了宏（macro）的作用。它们的原型定义可以是下面两种中的任何一个：
+template &amp;lt;class identifier&amp;gt; function_declaration; template &amp;lt;typename identifier&amp;gt; function_declaration;  上面两种原型定义的不同之处在关键字class 或 typename的使用。它们实际是完全等价的，因为两种表达的意思和执行都一模一样。
+举例来说：
+template&amp;lt;class 模板参数表&amp;gt; class 类名｛ // 类定义．．．．．．   };
+template 是声明类模板的关键字，表示声明一个模板，模板参数可以是一个，也可以是多个，可以是类型参数 ，也可以是非类型参数。类型参数由关键字class或typename及其后面的标识符构成。非类型参数由一个普通参数构成，代表模板定义中的一个常量。
+模板函数：
+#include &amp;lt;iostream.h&amp;gt; template &amp;lt;class T&amp;gt; T GetMax (T a, T b) { T result; result = (a&amp;gt;b)? a : b; return (result); } int main () { int i=5, j=6, k; long l=10, m=5, n; k=GetMax(i,j); n=GetMax(l,m); cout &amp;lt;&amp;lt; k &amp;lt;&amp;lt; endl; cout &amp;lt;&amp;lt; n &amp;lt;&amp;lt; endl; return 0; }  类模板：</description>
+			<content type="html"><![CDATA[<p>接上次的笔记，继续整理std::bind,std::function等函数，以及template的一些使用说明。</p>
+<p>相关链接：</p>
+<p>1.<a href="http://www.prglab.com/cms/pages/c-tutorial/advanced-concepts/templates.php">模板(Templates)</a></p>
+<p>2.<a href="http://www.cnblogs.com/assemble8086/archive/2011/10/02/2198308.html">C++中的类模板详细讲述</a></p>
+<p>3.<a href="http://www.jellythink.com/archives/773">C++11中的std::bind</a></p>
+<p>4.<a href="https://www.zhihu.com/question/28292740">什么是函数式编程思维？</a></p>
+<h1 id="template的理解与使用">Template的理解与使用</h1>
+<p>使用模板技术其实原因很简单，就是为了泛型编程。主要可以分为模板函数和模板类两个方面。具体来说，模板(Templates)使得我们可以生成通用的函数或类，这些函数或类能够接受任意数据类型的参数，可返回任意类型的值，而不需要对所有可能的数据类型进行函数重载。这在一定程度上实现了宏（macro）的作用。它们的原型定义可以是下面两种中的任何一个：</p>
+<pre><code>template &lt;class identifier&gt; function_declaration;
+template &lt;typename identifier&gt; function_declaration;
+</code></pre>
+<p>上面两种原型定义的不同之处在关键字class 或 typename的使用。它们实际是完全等价的，因为两种表达的意思和执行都一模一样。</p>
+<p>举例来说：</p>
+<pre><code>template&lt;class 模板参数表&gt;
+class 类名｛
+// 类定义．．．．．．
+</code></pre>
+<p>   };</p>
+<p>template 是声明类模板的关键字，表示声明一个模板，模板参数可以是一个，也可以是多个，可以是类型参数 ，也可以是非类型参数。类型参数由关键字class或typename及其后面的标识符构成。非类型参数由一个普通参数构成，代表模板定义中的一个常量。</p>
+<p>模板函数：</p>
+<pre><code>#include &lt;iostream.h&gt;
+template &lt;class T&gt; T GetMax (T a, T b) {
+T result;
+result = (a&gt;b)? a : b;
+return (result);
+}
+
+int main () {
+  int i=5, j=6, k;
+  long l=10, m=5, n;
+  k=GetMax(i,j);
+  n=GetMax(l,m);
+  cout &lt;&lt; k &lt;&lt; endl;
+  cout &lt;&lt; n &lt;&lt; endl;
+  return 0;
+}
+</code></pre>
+<p>类模板：</p>
+<pre><code>#include &lt;iostream.h&gt;
+template &lt;class T&gt; class pair {
+     T value1, value2;
+public:
+    pair (T first, T second) {
+        value1=first;
+        value2=second;
+    }
+    T getmax ();
+};
+template &lt;class T&gt;
+T pair::getmax (){
+    T retval;
+    retval = value1&gt;value2? value1 : value2;
+    return retval;
+}
+int main () {
+    pair myobject (100, 75);
+    cout &lt;&lt; myobject.getmax();
+    return 0;
+}
+</code></pre>
+<p>另外，像上文所说，模板中可以传入非类型参数，也就是说有些常量，函数等也可直接传入。具体的传入形式包括：</p>
+<pre><code>template &lt;class T&gt; // 最常用的：一个class 参数。
+template &lt;class T, class U&gt; // 两个class 参数。
+template &lt;class T, int N&gt; // 一个class 和一个整数。
+template &lt;class T = char&gt; // 有一个默认值。
+template &lt;int Tfunc (int)&gt; // 参数为一个函数。
+</code></pre>
+<h1 id="stdbind的理解与使用">std::bind的理解与使用</h1>
+<p>其实std::bind， std::functionu应该和上篇文章的lambda表达式一起讲，因为这几个最重要的用途都是一致的：用以处理回调函数。</p>
+<p>要讲这个之前，先要说明一个概念：闭包（closure）。这个概念在js,python中都很常见了，但是在c++中提出来的时间不长。引用维基百科的说法：</p>
+<pre><code>A closure (also lexical closure, function closure or function value) is a function together with  
+a referencing environment for the non-local variables of that function.  
+</code></pre>
+<p>也就就说：闭包 = 一个函数 + 它所依赖的环境（不需是函数内部的变量）。这就说是，这个函数不仅可以访问本地变量，还可以访问闭包内的外部变量。哟，厉害了我的哥。换句话说，只要我们通过某些方法构建了一个闭包（利用用lambda表达式捕获了外部变量），闭包内的这个函数就拥有了访问reference environment的权利，可以用来实现相应的功能。有的小伙伴就不同意了：“这个函数凭什么可以访问外部变量？它的生命周期是什么样？”，其实对于这个问题，最重要的就是理解js里面很重要的一个概念：“作用域”。 我再把js里面闭包的概念说一遍：“闭包是一种特殊的对象。它由两部分构成：函数，以及创建该函数的环境。环境由闭包创建时在作用域中的任何局部变量组成。”简而言之，这些函数可以“记忆”它被创建时候的环境。我猜想，针对在闭包中的函数，闭包其实会创建一个类，把整个闭包（整个作用域）里的变量都存放起来，作为这个函数可以访问的对象。</p>
+<p>理解了闭包之后，我们再来看看std::bind这个函数的作用。</p>
+<p>bind是这样一种机制，它可以预先把指定可调用实体的某些参数绑定到已有的变量，产生一个新的可调用实体。这句话前半句没什么意思，重要的就是后半句。大声告诉我，可以产生一个什么玩意儿？！可调用实体！这就摆明了跟你说，这个是拿来做回调用的嘛。而且这个可调用实体是什么类型，就是一个std::function对象！</p>
+<p>又有些朋友要问了，这个我用函数指针也能办到啊，那我就再解释清楚一点：function模板类和bind模板函数，使用它们可以实现类似函数指针的功能，但却比函数指针更加灵活，特别是函数指向类的非静态成员函数时。std::function可以绑定到全局函数/类静态成员函数(类静态成员函数与全局函数没有区别),如果要绑定到类的非静态成员函数，则需要使用std::bind。</p>
+<p>再给一个例子：</p>
+<pre><code>// in foo.h
+#pragma once
+#include &lt;iostream&gt;
+class Foo
+{
+public:
+void f1()
+{
+std::cout &lt;&lt; &quot;Foo::f1()&quot; &lt;&lt; std::endl;
+}
+
+static void f2()
+{
+std::cout &lt;&lt; &quot;static Foo::f2()&quot; &lt;&lt; std::endl;
+}
+};
+
+// in main.cpp
+int main()
+{
+Foo foo;
+std::function&lt;void(void)&gt; fs = &amp;Foo::f2; // 这可以赋值，编译通过。
+fs();
+</code></pre>
+<p>   std::function&lt;void(Foo*)&gt; ff = &amp;Foo::f1; // 这里就不行了，因为std::function绑定了一个非静态变量。
+ff(&amp;foo);
+return 0;
+}</p>
+<p>对于这个不行的应该怎么办呢？我们可以这样：</p>
+<pre><code>std::function&lt;void(Foo*)&gt; ff = std::bind(&amp;Foo::f1);  //接收一个对象
+</code></pre>
+<p>   ff(&amp;foo);  //传入一个实例的引用</p>
+<p>也可以这样：</p>
+<p>   std::function&lt;void(void)&gt; ff = std::bind(&amp;Foo::f1,&amp;foo);  //直接绑定一个实例对象的引用
+ff();</p>
+<p>还可以这样：</p>
+<pre><code>std::function&lt;void(Foo*)&gt; ff = [](Foo* foo){ foo-&gt;f1() };  //利用Lambda表达式
+</code></pre>
+<p>这说明了什么？说明std::bind， std::function, lambda表达式都是生成一个可调用的对象，都是构造一个闭包，都是用于函数回调。</p>
+<p>通过上面的介绍，我们基本了解了function, bind和lambda的用法，把三者结合起来，C++将会变得非常强大，有点函数式编程的味道了。最后，这里再补充一点，对于用bind来生成function和用lambda表达式来生成function, 通常情况下两种都是ok的，但是在参数多的时候,bind要传入很多的std::placeholders，而且看着没有lambda表达式直观，所以通常建议优先考虑使用lambda表达式。</p>
+<p>另外，有些同学在这里就懵逼了，什么叫函数式编程？</p>
+<p>引用知乎里面轮子哥的话：“函数式编程在使用的时候的特点就是，你已经再也不知道数据是从哪里来了，每一个函数都是为了用小函数组织成更大的函数，函数的参数也是函数，函数返回的也是函数，最后得到一个超级牛逼的函数，就等着别人用他来写一个main函数把数据灌进去了。”</p>
+<p>详细一点的解释就是：函数式编程是一种编程范式，我们常见的编程范式有命令式编程（Imperative programming），函数式编程，逻辑式编程，常见的面向对象编程是也是一种命令式编程。</p>
+<p>命令式编程是面向计算机硬件的抽象，有变量（对应着存储单元），赋值语句（获取，存储指令），表达式（内存引用和算术运算）和控制语句（跳转指令），一句话，命令式程序就是一个冯诺依曼机的指令序列。</p>
+<p>而函数式编程是面向数学的抽象，将计算描述为一种表达式求值，一句话，函数式程序就是一个表达式。</p>
+<p>更为具体的解释，可以看知乎的第二个高票回答（用心阁的回答）。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Websocket简析</title>
+			<link>https://example.com/posts/2016/2016-09-10-websocket/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>https://example.com/posts/2016/2016-09-10-websocket/</guid>
+			<description>这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。 所以这里将websocket相应的信息整理一下。
+相关链接：
+1.Websocket协议
+2.Websocket协议解析
+#何谓Websocket？
+WebSocket是HTML5出的东西（协议）， 其实可以说与http基本没有关系。相对于HTTP这种非持久的协议来说，Websocket是一个持久化的协议，并且是一个双工的通信形式。
+简单的举个例子吧，用目前应用比较广泛的PHP生命周期来解释：
+HTTP的生命周期通过Request来界定，也就是一个Request 一个Response，那么在HTTP1.0中，这次HTTP请求就结束了。 在HTTP1.1中进行了改进，使得有一个keep-alive，也就是说，在一个HTTP连接中，可以发送多个Request，接收多个Response。 但是请记住 Request = Response ， 在HTTP中永远是这样，也就是说一个request只能有一个response。而且这个response也是被动的，不能主动发起。
+但是对于Websocket,首先它是基于HTTP协议的，或者说借用了HTTP的协议来完成一部分握手。 在握手阶段是一样的：
+首先我们来看个典型的Websocket握手（借用Wikipedia的。。）
+GET /chat HTTP/1.1
+Host: server.example.com
+Upgrade: websocket
+Connection: Upgrade
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+Origin: http://example.com
+熟悉HTTP的童鞋可能发现了，这段类似HTTP协议的握手请求中，多了几个东西：
+Upgrade: websocket
+Connection: Upgrade
+这个就是Websocket的核心了，告诉Apache、Nginx等服务器：注意啦，我发起的是Websocket协议，快点帮我找到对应的助理处理~不是那个老土的HTTP。
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
+Sec-WebSocket-Protocol: chat, superchat
+Sec-WebSocket-Version: 13
+首先，Sec-WebSocket-Key 是一个Base64 encode的值，这个是浏览器随机生成的，告诉服务器：泥煤，不要忽悠窝，我要验证尼是不是真的是Websocket助理。
+然后，Sec_WebSocket-Protocol 是一个用户定义的字符串，用来区分同URL下，不同的服务所需要的协议。简单理解：今晚我要服务A，别搞错啦~
+最后，Sec-WebSocket-Version 是告诉服务器所使用的Websocket Draft（协议版本），在最初的时候，Websocket协议还在 Draft 阶段，各种奇奇怪怪的协议都有，而且还有很多期奇奇怪怪不同的东西，什么Firefox和Chrome用的不是一个版本之类的，当初Websocket协议太多可是一个大难题。。不过现在还好，已经定下来啦~大家都使用的一个东西~ 脱水：服务员，我要的是13岁的噢→_→
+然后服务器会返回下列东西，表示已经接受到请求， 成功建立Websocket啦！
+HTTP/1.1 101 Switching Protocols
+Upgrade: websocket</description>
+			<content type="html"><![CDATA[<p>这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。
+所以这里将websocket相应的信息整理一下。</p>
+<p>相关链接：</p>
+<p>1.<a href="http://blog.csdn.net/mary736265635/article/details/47757237">Websocket协议</a></p>
+<p>2.<a href="http://www.king-liu.net/?p=772">Websocket协议解析</a></p>
+<p>#何谓Websocket？</p>
+<p>WebSocket是HTML5出的东西（协议），  其实可以说与http基本没有关系。相对于HTTP这种非持久的协议来说，Websocket是一个持久化的协议，并且是一个双工的通信形式。</p>
+<p>简单的举个例子吧，用目前应用比较广泛的PHP生命周期来解释：</p>
+<p>HTTP的生命周期通过Request来界定，也就是一个Request 一个Response，那么在HTTP1.0中，这次HTTP请求就结束了。
+在HTTP1.1中进行了改进，使得有一个keep-alive，也就是说，在一个HTTP连接中，可以发送多个Request，接收多个Response。
+但是请记住 Request = Response ， 在HTTP中永远是这样，也就是说一个request只能有一个response。而且这个response也是被动的，不能主动发起。</p>
+<p>但是对于Websocket,首先它是基于HTTP协议的，或者说借用了HTTP的协议来完成一部分握手。
+在握手阶段是一样的：</p>
+<p>首先我们来看个典型的Websocket握手（借用Wikipedia的。。）</p>
+<p>GET /chat HTTP/1.1</p>
+<p>Host: server.example.com</p>
+<p>Upgrade: websocket</p>
+<p>Connection: Upgrade</p>
+<p>Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==</p>
+<p>Sec-WebSocket-Protocol: chat, superchat</p>
+<p>Sec-WebSocket-Version: 13</p>
+<p>Origin: <a href="http://example.com">http://example.com</a></p>
+<p>熟悉HTTP的童鞋可能发现了，这段类似HTTP协议的握手请求中，多了几个东西：</p>
+<p>Upgrade: websocket</p>
+<p>Connection: Upgrade</p>
+<p>这个就是Websocket的核心了，告诉Apache、Nginx等服务器：注意啦，我发起的是Websocket协议，快点帮我找到对应的助理处理~不是那个老土的HTTP。</p>
+<p>Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==</p>
+<p>Sec-WebSocket-Protocol: chat, superchat</p>
+<p>Sec-WebSocket-Version: 13</p>
+<p>首先，Sec-WebSocket-Key 是一个Base64 encode的值，这个是浏览器随机生成的，告诉服务器：泥煤，不要忽悠窝，我要验证尼是不是真的是Websocket助理。</p>
+<p>然后，Sec_WebSocket-Protocol 是一个用户定义的字符串，用来区分同URL下，不同的服务所需要的协议。简单理解：今晚我要服务A，别搞错啦~</p>
+<p>最后，Sec-WebSocket-Version 是告诉服务器所使用的Websocket Draft（协议版本），在最初的时候，Websocket协议还在 Draft 阶段，各种奇奇怪怪的协议都有，而且还有很多期奇奇怪怪不同的东西，什么Firefox和Chrome用的不是一个版本之类的，当初Websocket协议太多可是一个大难题。。不过现在还好，已经定下来啦~大家都使用的一个东西~ 脱水：服务员，我要的是13岁的噢→_→</p>
+<p>然后服务器会返回下列东西，表示已经接受到请求， 成功建立Websocket啦！</p>
+<p>HTTP/1.1 101 Switching Protocols</p>
+<p>Upgrade: websocket</p>
+<p>Connection: Upgrade</p>
+<p>Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=</p>
+<p>Sec-WebSocket-Protocol: chat</p>
+<p>这里开始就是HTTP最后负责的区域了，告诉客户，我已经成功切换协议啦~</p>
+<p>Upgrade: websocket</p>
+<p>Connection: Upgrade</p>
+<p>依然是固定的，告诉客户端即将升级的是Websocket协议，而不是mozillasocket，lurnarsocket或者shitsocket。</p>
+<p>然后，Sec-WebSocket-Accept 这个则是经过服务器确认，并且加密过后的 Sec-WebSocket-Key。服务器：好啦好啦，知道啦，给你看我的ID CARD来证明行了吧。。</p>
+<p>后面的，Sec-WebSocket-Protocol 则是表示最终使用的协议。</p>
+<p>至此，HTTP已经完成它所有工作了，接下来就是完全按照Websocket协议进行了。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>一套远程项目的技术点总结</title>
+			<link>https://example.com/posts/2016/2016-12-18-%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>https://example.com/posts/2016/2016-12-18-%E4%B8%80%E5%A5%97%E8%BF%9C%E7%A8%8B%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8A%80%E6%9C%AF%E7%82%B9%E6%80%BB%E7%BB%93/</guid>
+			<description>要完成一个远程监控的项目，大体需要包含以下几个方面的工作：1.前端 2. 服务器端（后台） 3. 对于很多物联网的硬件来说，还有从相应硬件连接到服务器的一部分， 我将其称之为后端。对于每个部分，我希望自己都能掌握至少一种语言，一种框架，能够对整套流程的开发做到完全可知可控。现阶段，前端我希望能掌握 html+css+js的 三件套语言，以及vue.js的开发框架。服务器端掌握node.js的开发语言，以及think.js的开发框架。对于后台，掌握c++的开发，以及相应c+11的特性。至于嵌入式，那 暂时不是我的兴趣，我就不去太多关注了。
+对于一个PC端桌面应用而言，“QT-C++-Electron-前端”这套方案，我觉得是非常好的解决方案。这样最大的几个好处是：1.前后端分离，靠websocet通信，架构清晰。 2.前端页面漂亮，交互自然。 3.移植到网页版简单方便。 总的来说，相应的桌面程序可以又快又漂亮！
+对于服务器端，简单的几个必要工作就是：1.购买服务器，购买域名，配置nginx,配置或者购买数据库。2.搭建合适的开发框架，开搞~由于我现在做的项目还比较小， 暂时还没有涉及到分布式数据库的工作，所以对于分布式这块还不太了解。
+对于前端，掌握react.js, vue.js，特别是vue.js，我觉得前途比较大。</description>
+			<content type="html"><![CDATA[<p>要完成一个远程监控的项目，大体需要包含以下几个方面的工作：1.前端 2. 服务器端（后台） 3. 对于很多物联网的硬件来说，还有从相应硬件连接到服务器的一部分，
+我将其称之为后端。对于每个部分，我希望自己都能掌握至少一种语言，一种框架，能够对整套流程的开发做到完全可知可控。现阶段，前端我希望能掌握 html+css+js的
+三件套语言，以及vue.js的开发框架。服务器端掌握node.js的开发语言，以及think.js的开发框架。对于后台，掌握c++的开发，以及相应c+11的特性。至于嵌入式，那
+暂时不是我的兴趣，我就不去太多关注了。</p>
+<p>对于一个PC端桌面应用而言，“QT-C++-Electron-前端”这套方案，我觉得是非常好的解决方案。这样最大的几个好处是：1.前后端分离，靠websocet通信，架构清晰。
+2.前端页面漂亮，交互自然。 3.移植到网页版简单方便。 总的来说，相应的桌面程序可以又快又漂亮！</p>
+<p>对于服务器端，简单的几个必要工作就是：1.购买服务器，购买域名，配置nginx,配置或者购买数据库。2.搭建合适的开发框架，开搞~由于我现在做的项目还比较小，
+暂时还没有涉及到分布式数据库的工作，所以对于分布式这块还不太了解。</p>
+<p>对于前端，掌握react.js, vue.js，特别是vue.js，我觉得前途比较大。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>他山之石，可以攻玉 (B站代码学习系列一)</title>
+			<link>https://example.com/posts/2019/2019-5-12-%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</link>
+			<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+			
+			<guid>https://example.com/posts/2019/2019-5-12-%E4%BB%96%E5%B1%B1%E4%B9%8B%E7%9F%B3%E5%8F%AF%E4%BB%A5%E6%94%BB%E7%8E%89-b%E7%AB%99%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97%E4%B8%80/</guid>
+			<description>由于众所周知的一些原因，B站代码迫不得已&amp;quot;被开源&amp;quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。 由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：
+ B站代码结构学习(主要学习/app目录) B站典型的中间件/框架学习（主要学习/library目录） B站整体的技术栈分析（与业界的比较）。  今天先讲第一部分：B站代码结构学习。
+相关链接：
+1.一探B站后台架构
+B站代码结构学习 先贴一张B站的整体代码结构出来： 在这张结构图中，可以看到几个点：
+ 整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。 有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。 在.gitlab中，有比较规范的提交规范和MR规范。 代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel+jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。 包管理方案使用的是vendor。  接下来我们再看下/app 目录下的具体结构： 解释说明如下：
+ admin: 后台管理模块 common:公共模块，实际上没咋用到 infra:各种消息相关的基础服务（canal/config/databus/discovery/notification） interface: 提供对外网关的服务 service: 提供RPC的内部服务 job:提供异步服务，主要用于处理消息队列 tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。  由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。
+接下来我们再看看具体某个业务的代码结构： 解释说明如下：
+ cmd:存放main.go和配置文件(使用toml格式)，作为启动入口 conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。 dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。 model:数据库相关结构体 server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。 service:提供服务实现，完成具体逻辑。 rpc（如有）：提供RPC调用方法。 版本三剑客。  由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。
+需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。</description>
+			<content type="html"><![CDATA[<p>由于众所周知的一些原因，B站代码迫不得已&quot;被开源&quot;了。最近在看B站代码的过程中，也将一些学习心得记录下来。
+由于相关的技术点还是比较多的，因此准备分成一个系列来讲，整体提纲如下：</p>
+<ol>
+<li>B站代码结构学习(主要学习/app目录)</li>
+<li>B站典型的中间件/框架学习（主要学习/library目录）</li>
+<li>B站整体的技术栈分析（与业界的比较）。</li>
+</ol>
+<p>今天先讲第一部分：B站代码结构学习。</p>
+<p>相关链接：</p>
+<p>1.<a href="https://studygolang.com/articles/19995#reply0">一探B站后台架构</a></p>
+<h1 id="b站代码结构学习">B站代码结构学习</h1>
+<p>先贴一张B站的整体代码结构出来：
+<img src="/media/files/2019/05/B%E7%AB%99%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="">
+在这张结构图中，可以看到几个点：</p>
+<ol>
+<li>整体代码结构比较简单，其中app为主要代码目录，build为构建工具以及代码检验的脚本，library为各种基础库建设（如缓存，配置，日志，数据库，服务发现，限流，RPC等）。</li>
+<li>有比较规范的版本控制的三剑客——README.MD,CHANGELOG.MD,CONTRIBUTOR.MD,并且在每个子模块中，也必须含有独立的版本控制三剑客。</li>
+<li>在.gitlab中，有比较规范的提交规范和MR规范。</li>
+<li>代码是托管在自建的gitlab上，但是没有用gitlab-runner来构建，而是用bazel+jenkins的形式。这个应该是B站之前的历史包袱，我觉得用Gitlab-runner还是方 便一些。</li>
+<li>包管理方案使用的是vendor。</li>
+</ol>
+<p>接下来我们再看下/app 目录下的具体结构：
+<img src="/media/files/2019/05/B%E7%AB%99:app%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="">
+解释说明如下：</p>
+<ol>
+<li>admin: 后台管理模块</li>
+<li>common:公共模块，实际上没咋用到</li>
+<li>infra:各种消息相关的基础服务（canal/config/databus/discovery/notification）</li>
+<li>interface: 提供对外网关的服务</li>
+<li>service: 提供RPC的内部服务</li>
+<li>job:提供异步服务，主要用于处理消息队列</li>
+<li>tools:提供各种工具，如各种模板生成工具，在这里面就涉及到了bmproto,warden等bili的http框架。</li>
+</ol>
+<p>由此可以看出，B站基本是以一个大仓库的方式来管理代码，所有的业务代码都横向拆分为上面的7层结构，然后在每层结构中写对应的业务逻辑。这样的形式适用于一个比较重的后台，对于比较简单独立的后台服务，就不太适用了。同时，也是正因为B站采用了大仓库的方式，因此也使用了bazel这个工具，实现增量构建。</p>
+<p>接下来我们再看看具体某个业务的代码结构：
+<img src="/media/files/2019/05/B%E7%AB%99%E5%85%B7%E4%BD%93%E4%B8%9A%E5%8A%A1%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="">
+解释说明如下：</p>
+<ol>
+<li>cmd:存放main.go和配置文件(使用toml格式)，作为启动入口</li>
+<li>conf:存放配置文件中对应过来的struct结构体，以及部分初始化函数。</li>
+<li>dao:数据库/redis/缓存等的访问object,以及部分rpc的方法。</li>
+<li>model:数据库相关结构体</li>
+<li>server/http：提供对外接口的一些基础功能，主要是做聚合/转换等，主要的逻辑还是在service层做。</li>
+<li>service:提供服务实现，完成具体逻辑。</li>
+<li>rpc（如有）：提供RPC调用方法。</li>
+<li>版本三剑客。</li>
+</ol>
+<p>由此看出，在具体的业务中，B站代码也把它分为了7层，从model层一直向上长，直至cmd层,然后由cmd层开始进行初始化，开始搞事情。</p>
+<p>需要注意的是，在/app目录下，所有的代码都是纯业务相关的，一些必须的工程化轮子，例如：数据库升降级/服务注册/tracing等等，全部都放在了/library中。对于这部分的讲解，我们放在下一篇文章。</p>
+]]></content>
+		</item>
+		
+	</channel>
+</rss>
