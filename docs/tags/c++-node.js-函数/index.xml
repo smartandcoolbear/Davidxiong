@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>C&#43;&#43;, node.js, 函数 on 熊川樘的技术博客</title>
-    <link>https://smartandcoolbear.github.io/tags/c&#43;&#43;-node.js-%E5%87%BD%E6%95%B0/</link>
+    <link>https://smartandcoolbear.github.io/Davidxiong/tags/c&#43;&#43;-node.js-%E5%87%BD%E6%95%B0/</link>
     <description>Recent content in C&#43;&#43;, node.js, 函数 on 熊川樘的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://smartandcoolbear.github.io/tags/c++-node.js-%E5%87%BD%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://smartandcoolbear.github.io/Davidxiong/tags/c++-node.js-%E5%87%BD%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>C&#43;&#43;与nodejs的比较之函数探究</title>
-      <link>https://smartandcoolbear.github.io/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
+      <link>https://smartandcoolbear.github.io/Davidxiong/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://smartandcoolbear.github.io/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
+      <guid>https://smartandcoolbear.github.io/Davidxiong/posts/2016/c&#43;&#43;%E4%B8%8Enodejs%E7%9A%84%E6%AF%94%E8%BE%83%E4%B9%8B%E5%87%BD%E6%95%B0%E6%8E%A2%E7%A9%B6/</guid>
       <description>现在在同时学习C++和node.js的相关知识，两者相互对应，发现了很多有趣的点，能够从中感受到在语言创立之初，一个精巧的设计能够多么大的影响整个语言的发展进程。其中，由于两种语言对于“函数”的理解不同，很大程度上影响了两者的应用范围和发展方向。所以这篇文章， 我就以“函数”为切入点，说明一下两个语言有趣的地方。
 相关链接：
 1.C/C++函数指针的用法

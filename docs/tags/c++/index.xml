@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>C&#43;&#43; on 熊川樘的技术博客</title>
-    <link>https://smartandcoolbear.github.io/tags/c&#43;&#43;/</link>
+    <link>https://smartandcoolbear.github.io/Davidxiong/tags/c&#43;&#43;/</link>
     <description>Recent content in C&#43;&#43; on 熊川樘的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://smartandcoolbear.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://smartandcoolbear.github.io/Davidxiong/tags/c++/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>std::bind 和template的使用</title>
-      <link>https://smartandcoolbear.github.io/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
+      <link>https://smartandcoolbear.github.io/Davidxiong/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://smartandcoolbear.github.io/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
+      <guid>https://smartandcoolbear.github.io/Davidxiong/posts/2016/stdbind-%E5%92%8Ctemplate%E7%9A%84%E4%BD%BF%E7%94%A8/</guid>
       <description>接上次的笔记，继续整理std::bind,std::function等函数，以及template的一些使用说明。
 相关链接：
 1.模板(Templates)

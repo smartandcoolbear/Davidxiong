@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>websocket on 熊川樘的技术博客</title>
-    <link>https://smartandcoolbear.github.io/tags/websocket/</link>
+    <link>https://smartandcoolbear.github.io/Davidxiong/tags/websocket/</link>
     <description>Recent content in websocket on 熊川樘的技术博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 10 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://smartandcoolbear.github.io/tags/websocket/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://smartandcoolbear.github.io/Davidxiong/tags/websocket/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Websocket简析</title>
-      <link>https://smartandcoolbear.github.io/posts/2016/websocket/</link>
+      <link>https://smartandcoolbear.github.io/Davidxiong/posts/2016/websocket/</link>
       <pubDate>Sat, 10 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://smartandcoolbear.github.io/posts/2016/websocket/</guid>
+      <guid>https://smartandcoolbear.github.io/Davidxiong/posts/2016/websocket/</guid>
       <description>这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。 所以这里将websocket相应的信息整理一下。
 相关链接：
 1.Websocket协议
