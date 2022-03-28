@@ -10,10 +10,10 @@
     <lastBuildDate>Sat, 10 Sep 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/websocket/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Websocket简析</title>
-      <link>https://example.com/posts/2016/2016-09-10-websocket/</link>
+      <link>https://example.com/posts/2016/websocket/</link>
       <pubDate>Sat, 10 Sep 2016 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/posts/2016/2016-09-10-websocket/</guid>
+      <guid>https://example.com/posts/2016/websocket/</guid>
       <description>这段时间一直在用websocket来传输数据，不管是前端和服务器，后端和服务器，甚至后端C++层里，都大量的使用了websocket通信，而且也越发的觉得websocket甚是好用。 所以这里将websocket相应的信息整理一下。
 相关链接：
 1.Websocket协议
