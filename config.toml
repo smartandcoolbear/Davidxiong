@@ -1,7 +1,7 @@
 baseURL = "https://smartandcoolbear.github.io/Davidxiong"
 languageCode = "en-us"
 defaultContentLanguage = "en"
-title = "熊川樘技术博客"
+title = "熊川樘的技术博客"
 theme = "hermit"
 publishDir = "docs"
 # enableGitInfo = true
